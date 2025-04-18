@@ -83,5 +83,6 @@ Global
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {808EB01F-9B13-40FE-BF8F-3E09CDBF8BA7}
+		Dockerfile = Dockerfile
 	EndGlobalSection
 EndGlobal
