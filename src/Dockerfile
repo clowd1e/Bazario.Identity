@@ -12,12 +12,17 @@ EXPOSE 5002
 FROM mcr.microsoft.com/dotnet/sdk:9.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
-COPY ["Bazario.Identity.WebAPI/Bazario.Identity.WebAPI.csproj", "Bazario.Identity.WebAPI/"]
-COPY ["Bazario.Identity.Infrastructure/Bazario.Identity.Infrastructure.csproj", "Bazario.Identity.Infrastructure/"]
-COPY ["Bazario.Identity.Application/Bazario.Identity.Application.csproj", "Bazario.Identity.Application/"]
-COPY ["Bazario.Identity.Domain/Bazario.Identity.Domain.csproj", "Bazario.Identity.Domain/"]
+COPY ["Bazario.Identity/src/Bazario.Identity.WebAPI/Bazario.Identity.WebAPI.csproj", "Bazario.Identity.WebAPI/"]
+COPY ["Bazario.Identity/src/Bazario.Identity.Infrastructure/Bazario.Identity.Infrastructure.csproj", "Bazario.Identity.Infrastructure/"]
+COPY ["Bazario.Identity/src/Bazario.Identity.Application/Bazario.Identity.Application.csproj", "Bazario.Identity.Application/"]
+COPY ["Bazario.Identity/src/Bazario.Identity.Domain/Bazario.Identity.Domain.csproj", "Bazario.Identity.Domain/"]
+
+COPY Bazario.AspNetCore.Shared/NuGetPackages /nuget-packages
+
+RUN dotnet nuget add source /nuget-packages --name NuGetPackages
+
 RUN dotnet restore "./Bazario.Identity.WebAPI/Bazario.Identity.WebAPI.csproj"
-COPY . .
+COPY Bazario.Identity/src/ .
 WORKDIR "/src/Bazario.Identity.WebAPI"
 RUN dotnet build "./Bazario.Identity.WebAPI.csproj" -c $BUILD_CONFIGURATION -o /app/build
 

@@ -1,4 +1,5 @@
-﻿using Microsoft.Extensions.DependencyInjection;
+﻿using Bazario.Identity.Infrastructure.Extensions.DI;
+using Microsoft.Extensions.DependencyInjection;
 
 namespace Bazario.Identity.Infrastructure
 {
@@ -6,6 +7,10 @@ namespace Bazario.Identity.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
+            services.ConfigureAppOptions();
+
+            services.AddPersistence();
+
             return services;
         }
     }
