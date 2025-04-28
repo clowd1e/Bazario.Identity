@@ -1,4 +1,5 @@
-﻿using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
+﻿using Bazario.AspNetCore.Shared.Auth.Options;
+using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
 using Bazario.Identity.Infrastructure.Persistence.Options;
 
 namespace Bazario.Identity.WebAPI.Extensions
@@ -8,6 +9,7 @@ namespace Bazario.Identity.WebAPI.Extensions
         public static IServiceProvider ValidateAppOptions(this IServiceProvider serviceProvider)
         {
             serviceProvider.ValidateOptionsOnStart<DbSettings>();
+            serviceProvider.ValidateOptionsOnStart<JwtSettings>();
 
             return serviceProvider;
         }

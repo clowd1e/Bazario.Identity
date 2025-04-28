@@ -1,4 +1,5 @@
-﻿using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
+﻿using Bazario.AspNetCore.Shared.Auth.Options;
+using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
 using Bazario.Identity.Infrastructure.Persistence.Options;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -10,6 +11,8 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
         {
             services.ConfigureValidatableOptions<DbSettings, DbSettingsValidator>(
                 DbSettings.SectionName);
+            services.ConfigureValidatableOptions<JwtSettings, JwtSettingsValidator>(
+                JwtSettings.SectionName);
 
             return services;
         }

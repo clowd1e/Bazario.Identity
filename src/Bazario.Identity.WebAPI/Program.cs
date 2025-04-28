@@ -1,3 +1,4 @@
+using Bazario.AspNetCore.Shared.Auth.DependencyInjection;
 using Bazario.Identity.Application;
 using Bazario.Identity.Infrastructure;
 using Bazario.Identity.Infrastructure.Extensions;
@@ -11,6 +12,9 @@ builder.Services.AddOpenApi();
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure();
+
+builder.Services.ConfigureAuthentication();
+builder.Services.ConfigureAuthorization();
 
 var app = builder.Build();
 
@@ -30,5 +34,9 @@ else
 {
     app.UseHttpsRedirection();
 }
+
+app.UseAuthentication();
+
+app.UseAuthorization();
 
 app.Run();

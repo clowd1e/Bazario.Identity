@@ -18,8 +18,10 @@ COPY ["Bazario.Identity/src/Bazario.Identity.Application/Bazario.Identity.Applic
 COPY ["Bazario.Identity/src/Bazario.Identity.Domain/Bazario.Identity.Domain.csproj", "Bazario.Identity.Domain/"]
 
 COPY Bazario.AspNetCore.Shared/NuGetPackages /nuget-packages
-
 RUN dotnet nuget add source /nuget-packages --name NuGetPackages
+
+COPY Bazario.Docker/scripts/wait-for-it.sh /wait-for-it.sh
+RUN chmod +x /wait-for-it.sh
 
 RUN dotnet restore "./Bazario.Identity.WebAPI/Bazario.Identity.WebAPI.csproj"
 COPY Bazario.Identity/src/ .
