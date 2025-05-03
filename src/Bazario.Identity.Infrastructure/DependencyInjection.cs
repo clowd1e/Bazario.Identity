@@ -9,6 +9,8 @@ namespace Bazario.Identity.Infrastructure
         {
             services.ConfigureAppOptions();
 
+            services.AddInfrastructureServices();
+
             services.AddPersistence();
 
             return services;

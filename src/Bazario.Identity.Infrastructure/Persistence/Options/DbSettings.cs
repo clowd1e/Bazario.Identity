@@ -3,7 +3,7 @@ using System.ComponentModel.DataAnnotations;
 
 namespace Bazario.Identity.Infrastructure.Persistence.Options
 {
-    public class DbSettings : IAppOptions
+    public sealed class DbSettings : IAppOptions
     {
         public const string SectionName = nameof(DbSettings);
 
