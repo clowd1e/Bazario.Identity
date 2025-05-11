@@ -1,5 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Authentication.Options;
-using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
+using Bazario.AspNetCore.Shared.Options.DependencyInjection;
+using Bazario.Identity.Application.Identity.Options;
 using Bazario.Identity.Infrastructure.Authentication.Options;
 using Bazario.Identity.Infrastructure.Persistence.Options;
 using Bazario.Identity.Infrastructure.Services.Security.Options;
@@ -16,6 +17,7 @@ namespace Bazario.Identity.WebAPI.Extensions
             serviceProvider.ValidateOptionsOnStart<RefreshTokenSettings>();
             serviceProvider.ValidateOptionsOnStart<HashSettings>();
             serviceProvider.ValidateOptionsOnStart<OwnerSettings>();
+            serviceProvider.ValidateOptionsOnStart<ConfirmEmailTokenSettings>();
 
             return serviceProvider;
         }

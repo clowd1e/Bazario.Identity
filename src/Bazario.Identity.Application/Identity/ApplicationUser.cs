@@ -2,7 +2,7 @@
 
 namespace Bazario.Identity.Application.Identity
 {
-    public class User : IdentityUser
+    public class ApplicationUser : IdentityUser
     {
         public string? RefreshTokenHash { get; set; }
 

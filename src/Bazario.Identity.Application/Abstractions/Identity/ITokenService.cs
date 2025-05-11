@@ -5,9 +5,11 @@ namespace Bazario.Identity.Application.Abstractions.Identity
 {
     public interface ITokenService
     {
-        Task<string> GenerateAccessTokenAsync(User user);
+        Task<string> GenerateAccessTokenAsync(ApplicationUser user);
 
         string GenerateRefreshToken();
+
+        string GenerateEmailConfirmationToken();
 
         Task<Result> ValidateAccessTokenAsync(
             string token, bool validateLifetime = true);

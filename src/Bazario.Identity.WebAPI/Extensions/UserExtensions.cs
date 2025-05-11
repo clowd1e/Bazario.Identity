@@ -1,5 +1,5 @@
-﻿using Bazario.AspNetCore.Shared.Authorization.Roles;
-using Bazario.AspNetCore.Shared.Infrastructure.Options;
+﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
+using Bazario.AspNetCore.Shared.Options;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.WebAPI.Options;
@@ -16,7 +16,7 @@ namespace Bazario.Identity.WebAPI.Extensions
 
             var identityService = scope.ServiceProvider.GetRequiredService<IIdentityService>();
 
-            var owner = new User()
+            var owner = new ApplicationUser()
             {
                 Id = Guid.NewGuid().ToString(),
                 Email = ownerSettings.Email,

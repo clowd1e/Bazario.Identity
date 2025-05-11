@@ -8,7 +8,8 @@
 
   <ItemGroup>
     <PackageReference Include="Bazario.AspNetCore.Shared.Application" Version="1.0.0" />
-    <PackageReference Include="Bazario.AspNetCore.Shared.Authorization" Version="1.0.0" />
+    <PackageReference Include="Bazario.AspNetCore.Shared.Authorization" Version="1.0.1" />
+    <PackageReference Include="Bazario.AspNetCore.Shared.Options" Version="1.0.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />
     <PackageReference Include="Microsoft.Extensions.DependencyInjection.Abstractions" Version="9.0.4" />
     <PackageReference Include="Microsoft.Extensions.Identity.Stores" Version="9.0.4" />
@@ -16,10 +17,6 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Bazario.Identity.Domain\Bazario.Identity.Domain.csproj" />
-  </ItemGroup>
-
-  <ItemGroup>
-    <Folder Include="Features\Auth\Mappers\" />
   </ItemGroup>
 
 </Project>

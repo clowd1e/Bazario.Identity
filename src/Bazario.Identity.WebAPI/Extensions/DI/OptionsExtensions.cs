@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Infrastructure.Options.DependencyInjection;
+﻿using Bazario.AspNetCore.Shared.Options.DependencyInjection;
 using Bazario.Identity.WebAPI.Options;
 
 namespace Bazario.Identity.WebAPI.Extensions.DI

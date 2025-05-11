@@ -1,7 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
-using Bazario.Identity.Application.Features.Auth.DTO;
-using Bazario.Identity.Domain.Users;
+using Bazario.Identity.Application.Features.Auth.DTO.Responses;
+using Bazario.Identity.Domain.Users.Errors;
 using MediatR;
 
 namespace Bazario.Identity.Application.Features.Auth.Commands.Login
@@ -24,15 +24,15 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
             LoginCommand request,
             CancellationToken cancellationToken)
         {
-            var user = await _identityService.GetByEmailAsync(request.Email);
+            var applicationUser = await _identityService.GetByEmailAsync(request.Email);
 
-            if (user is null)
+            if (applicationUser is null)
             {
                 return Result.Failure<LoginResponse>(UserErrors.NotFound);
             }
 
             var loginResult = await _identityService.LoginAsync(
-                user,
+                applicationUser,
                 password: request.Password);
 
             if (loginResult.IsFailure)
@@ -40,7 +40,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
                 return Result.Failure<LoginResponse>(loginResult.Error);
             }
 
-            var isEmailConfirmed = await _identityService.IsEmailConfirmed(user);
+            var isEmailConfirmed = await _identityService.IsEmailConfirmed(applicationUser);
 
             if (!isEmailConfirmed)
             {
@@ -49,9 +49,9 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
 
             var refreshToken = _tokenService.GenerateRefreshToken();
 
-            await _identityService.PopulateRefreshTokenAsync(user, refreshToken);
+            await _identityService.PopulateRefreshTokenAsync(applicationUser, refreshToken);
 
-            var accessToken = await _tokenService.GenerateAccessTokenAsync(user);
+            var accessToken = await _tokenService.GenerateAccessTokenAsync(applicationUser);
 
             return new LoginResponse(
                 accessToken,

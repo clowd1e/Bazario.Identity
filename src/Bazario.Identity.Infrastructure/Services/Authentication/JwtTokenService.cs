@@ -1,9 +1,9 @@
 ﻿using Bazario.AspNetCore.Shared.Authentication.Options;
-using Bazario.AspNetCore.Shared.Authorization.Roles;
+using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Identity;
-using Bazario.Identity.Domain.Users;
+using Bazario.Identity.Domain.Users.Errors;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.IdentityModel.Tokens.Jwt;
@@ -28,7 +28,7 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
             _symmetricSecurityKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.SecretKey));
         }
 
-        public async Task<string> GenerateAccessTokenAsync(User user)
+        public async Task<string> GenerateAccessTokenAsync(ApplicationUser user)
         {
             var userRole = await _identityService.GetUserRoleAsync(user);
 
@@ -66,6 +66,11 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
         }
 
+        public string GenerateEmailConfirmationToken()
+        {
+            return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
+        }
+
         private JwtSecurityToken GenerateJwt(
             Claim[] claims,
             SigningCredentials credentials)
@@ -84,7 +89,7 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
             return new JwtSecurityTokenHandler().WriteToken(token);
         }
 
-        private Claim[] GenerateClaims(User user, Role role)
+        private Claim[] GenerateClaims(ApplicationUser user, Role role)
         {
             return
             [

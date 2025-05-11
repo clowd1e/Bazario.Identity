@@ -13,6 +13,8 @@ namespace Bazario.Identity.Infrastructure
 
             services.AddPersistence();
 
+            services.AddRepositories();
+
             return services;
         }
     }

@@ -1,5 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Abstractions.Data;
-using Bazario.AspNetCore.Shared.Infrastructure.Options;
+using Bazario.AspNetCore.Shared.Infrastructure.Persistence.DependencyInjection;
+using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Interceptors;
+using Bazario.AspNetCore.Shared.Options;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Infrastructure.Persistence;
 using Bazario.Identity.Infrastructure.Persistence.Options;
@@ -14,6 +16,8 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
         public static IServiceCollection AddPersistence(
             this IServiceCollection services)
         {
+            services.RegisterInterceptors();
+
             services.AddAppDbContext();
 
             services.AddUnitOfWork();
@@ -23,11 +27,22 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
             return services;
         }
 
+        private static IServiceCollection RegisterInterceptors(
+            this IServiceCollection services)
+        {
+            return services.RegisterInterceptor<ConvertDomainEventsToOutboxMessagesInterceptor>();
+        }
+
         private static void AddAppDbContext(
             this IServiceCollection services)
         {
             services.AddDbContext<AppDbContext>(
-                (serviceProvider, options) => options.UseNpgsqlWithDbSettings(serviceProvider));
+                (serviceProvider, options) =>
+                {
+                    options
+                        .UseNpgsqlWithDbSettings(serviceProvider)
+                        .AddAppInterceptors(serviceProvider);
+                });
         }
 
         private static DbContextOptionsBuilder UseNpgsqlWithDbSettings(
@@ -37,6 +52,16 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
             var dbSettings = serviceProvider.GetOptions<DbSettings>();
 
             return options.UseNpgsql(dbSettings.ConnectionString);
+        }
+
+        private static DbContextOptionsBuilder AddAppInterceptors(
+            this DbContextOptionsBuilder options,
+            IServiceProvider serviceProvider)
+        {
+            var publishDomainEventsInterceptor = serviceProvider
+                .GetRequiredService<ConvertDomainEventsToOutboxMessagesInterceptor>();
+
+            return options.AddInterceptors(publishDomainEventsInterceptor);
         }
 
         private static IServiceCollection AddUnitOfWork(
@@ -49,7 +74,7 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
             this IServiceCollection services)
         {
             return services
-                .AddIdentity<User, IdentityRole>()
+                .AddIdentity<ApplicationUser, IdentityRole>()
                 .AddRoleManager<RoleManager<IdentityRole>>()
                 .AddEntityFrameworkStores<AppDbContext>()
                 .AddDefaultTokenProviders();

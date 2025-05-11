@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Authorization.Roles;
+﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Microsoft.AspNetCore.Identity;
 

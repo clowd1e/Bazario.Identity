@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Infrastructure.Options;
+﻿using Bazario.AspNetCore.Shared.Options;
 using System.ComponentModel.DataAnnotations;
 
 namespace Bazario.Identity.Infrastructure.Authentication.Options

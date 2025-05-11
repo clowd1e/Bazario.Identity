@@ -1,6 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Results;
 
-namespace Bazario.Identity.Domain.Users
+namespace Bazario.Identity.Domain.Users.Errors
 {
     public static class UserErrors
     {
@@ -33,5 +33,10 @@ namespace Bazario.Identity.Domain.Users
             Error.Validation(
                 code: "User.RefreshTokenExpired",
                 description: "The provided refresh token has expired.");
+
+        public static readonly Error AlreadyRegistered =
+            Error.Validation(
+                code: "User.AlreadyRegistered",
+                description: "User with this email already exists.");
     }
 }

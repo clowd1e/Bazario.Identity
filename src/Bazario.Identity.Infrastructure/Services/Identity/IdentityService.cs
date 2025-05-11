@@ -1,10 +1,10 @@
-﻿using Bazario.AspNetCore.Shared.Authorization.Roles;
+﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Abstractions.Security;
 using Bazario.Identity.Application.Exceptions;
 using Bazario.Identity.Application.Identity;
-using Bazario.Identity.Domain.Users;
+using Bazario.Identity.Domain.Users.Errors;
 using Bazario.Identity.Infrastructure.Authentication.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
@@ -14,14 +14,14 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
 {
     internal sealed class IdentityService : IIdentityService
     {
-        private readonly UserManager<User> _userManager;
-        private readonly SignInManager<User> _signInManager;
+        private readonly UserManager<ApplicationUser> _userManager;
+        private readonly SignInManager<ApplicationUser> _signInManager;
         private readonly IHasher _hasher;
         private readonly RefreshTokenSettings _refreshTokenSettings;
 
         public IdentityService(
-            UserManager<User> userManager,
-            SignInManager<User> signInManager,
+            UserManager<ApplicationUser> userManager,
+            SignInManager<ApplicationUser> signInManager,
             IHasher hasher,
             IOptions<RefreshTokenSettings> refreshTokenSettings)
         {
@@ -32,7 +32,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
         }
 
         public async Task AssignUserToRoleAsync(
-            User user,
+            ApplicationUser user,
             string roleName)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));
@@ -44,7 +44,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
         }
 
         public async Task CreateAsync(
-            User user,
+            ApplicationUser user,
             string password)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));
@@ -55,14 +55,23 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             HandleIdentityResult(result, "Failed to create user.");
         }
 
-        public async Task<User?> GetByEmailAsync(string email)
+        public async Task DeleteAsync(ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+
+            var result = await _userManager.DeleteAsync(user);
+
+            HandleIdentityResult(result, "Failed to delete user.");
+        }
+
+        public async Task<ApplicationUser?> GetByEmailAsync(string email)
         {
             var user = await _userManager.FindByEmailAsync(email);
 
             return user;
         }
 
-        public async Task<Result<User>> GetByRefreshTokenAsync(string refreshToken)
+        public async Task<Result<ApplicationUser>> GetByRefreshTokenAsync(string refreshToken)
         {
             var refreshTokenHash = _hasher.Hash(refreshToken);
 
@@ -71,13 +80,13 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
 
             if (user is null)
             {
-                return Result.Failure<User>(UserErrors.InvalidRefreshToken);
+                return Result.Failure<ApplicationUser>(UserErrors.InvalidRefreshToken);
             }
 
             return Result.Success(user);
         }
 
-        public async Task<Role> GetUserRoleAsync(User user)
+        public async Task<Role> GetUserRoleAsync(ApplicationUser user)
         {
             var userRoles = await _userManager.GetRolesAsync(user);
 
@@ -95,7 +104,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             return role;
         }
 
-        public async Task<bool> IsEmailConfirmed(User user)
+        public async Task<bool> IsEmailConfirmed(ApplicationUser user)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));
 
@@ -105,7 +114,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
         }
 
         public async Task<Result> LoginAsync(
-            User user,
+            ApplicationUser user,
             string password)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));
@@ -126,7 +135,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
         }
 
         public async Task PopulateRefreshTokenAsync(
-            User user,
+            ApplicationUser user,
             string refreshToken)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));
@@ -142,11 +151,11 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             await _userManager.UpdateAsync(user);
         }
 
-        public Result ValidateRefreshToken(User user)
+        public Result ValidateRefreshToken(ApplicationUser user)
         {
             if (user.RefreshTokenExpiryTime < DateTime.UtcNow)
             {
-                return Result.Failure<User>(UserErrors.RefreshTokenExpired);
+                return Result.Failure<ApplicationUser>(UserErrors.RefreshTokenExpired);
             }
 
             return Result.Success();

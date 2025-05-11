@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Authorization.Roles;
+﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Identity;
 
@@ -6,22 +6,24 @@ namespace Bazario.Identity.Application.Abstractions.Identity
 {
     public interface IIdentityService
     {
-        Task<Result> LoginAsync(User user, string password);
+        Task<Result> LoginAsync(ApplicationUser user, string password);
 
-        Task PopulateRefreshTokenAsync(User user, string refreshToken);
+        Task PopulateRefreshTokenAsync(ApplicationUser user, string refreshToken);
 
-        Task<Role> GetUserRoleAsync(User user);
+        Task<Role> GetUserRoleAsync(ApplicationUser user);
 
-        Result ValidateRefreshToken(User user);
+        Result ValidateRefreshToken(ApplicationUser user);
 
-        Task<Result<User>> GetByRefreshTokenAsync(string refreshToken);
+        Task<Result<ApplicationUser>> GetByRefreshTokenAsync(string refreshToken);
 
-        Task CreateAsync(User user, string password);
+        Task CreateAsync(ApplicationUser user, string password);
 
-        Task AssignUserToRoleAsync(User user, string roleName);
+        Task DeleteAsync(ApplicationUser user);
 
-        Task<User?> GetByEmailAsync(string email);
+        Task AssignUserToRoleAsync(ApplicationUser user, string roleName);
 
-        Task<bool> IsEmailConfirmed(User user);
+        Task<ApplicationUser?> GetByEmailAsync(string email);
+
+        Task<bool> IsEmailConfirmed(ApplicationUser user);
     }
 }

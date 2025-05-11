@@ -1,4 +1,5 @@
 ﻿using Bazario.Identity.Application.Features.Auth.Commands.Login;
+using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
 using Bazario.Identity.WebAPI.Factories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -32,6 +33,14 @@ namespace Bazario.Identity.WebAPI.Controllers
             return commandResult.IsSuccess ? Ok(commandResult.Value) : _problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
+        [HttpPost("register")]
+        public async Task<IActionResult> Register(
+            [FromBody] RegisterUserCommand command)
+        {
+            var commandResult = await _sender.Send(command);
+
+            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+        }
 
         #endregion
     }
