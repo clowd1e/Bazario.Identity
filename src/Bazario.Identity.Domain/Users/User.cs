@@ -43,7 +43,7 @@ namespace Bazario.Identity.Domain.Users
             string email,
             string firstName,
             string lastName,
-            DateTime birthDate,
+            DateOnly birthDate,
             string phoneNumber)
         {
             RaiseDomainEvent(new UserRegisteredDomainEvent(

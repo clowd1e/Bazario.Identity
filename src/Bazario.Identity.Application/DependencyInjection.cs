@@ -2,7 +2,6 @@
 using Bazario.AspNetCore.Shared.Application.MediatR.DependencyInjection;
 using Bazario.Identity.Application.Extensions.DI;
 using Microsoft.Extensions.DependencyInjection;
-using System.Reflection;
 
 namespace Bazario.Identity.Application
 {
@@ -10,7 +9,7 @@ namespace Bazario.Identity.Application
     {
         public static IServiceCollection AddApplication(this IServiceCollection services)
         {
-            var assembly = Assembly.GetExecutingAssembly();
+            var assembly = typeof(DependencyInjection).Assembly;
 
             services.AddMediatRServices(assembly);
 

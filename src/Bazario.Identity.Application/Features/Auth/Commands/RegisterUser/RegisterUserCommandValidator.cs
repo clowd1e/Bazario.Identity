@@ -34,7 +34,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
 
             RuleFor(x => x.BirthDate)
                 .NotEmpty()
-                .LessThan(DateTime.UtcNow.AddYears(-18));
+                .LessThan(DateOnly.FromDateTime(DateTime.UtcNow.AddYears(-18)));
 
             RuleFor(x => x.PhoneNumber)
                 .NotEmpty()

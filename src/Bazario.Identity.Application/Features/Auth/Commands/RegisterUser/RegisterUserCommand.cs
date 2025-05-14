@@ -9,6 +9,6 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
         string RepeatPassword,
         string FirstName,
         string LastName,
-        DateTime BirthDate,
+        DateOnly BirthDate,
         string PhoneNumber) : IRequest<Result>;
 }
