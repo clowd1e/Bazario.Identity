@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Domain;
+using Bazario.AspNetCore.Shared.Infrastructure.Persistence;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Outbox;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
@@ -8,7 +9,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace Bazario.Identity.Infrastructure.Persistence
 {
-    public sealed class AppDbContext : IdentityDbContext<ApplicationUser>
+    public sealed class AppDbContext : IdentityDbContext<ApplicationUser>, IHasOutboxMessages
     {
         public DbSet<OutboxMessage> OutboxMessages { get; init; }
         

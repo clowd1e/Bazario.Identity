@@ -1,10 +1,10 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Abstractions.Data;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.DependencyInjection;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Interceptors;
+using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Options;
 using Bazario.AspNetCore.Shared.Options;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Infrastructure.Persistence;
-using Bazario.Identity.Infrastructure.Persistence.Options;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;

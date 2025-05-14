@@ -2,7 +2,8 @@
 
 namespace Bazario.Identity.Domain.Users.DomainEvents
 {
-    public sealed record UserCreatedDomainEvent(
+    public sealed record UserRegisteredDomainEvent(
+        Guid ConfirmEmailTokenId,
         string ConfirmEmailToken,
         Guid UserId,
         string Email,

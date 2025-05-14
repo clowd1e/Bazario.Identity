@@ -37,6 +37,7 @@ namespace Bazario.Identity.Domain.Users
         public IReadOnlyCollection<ConfirmEmailToken> ConfirmEmailTokens => _confirmEmailTokens;
 
         public void Register(
+            Guid confirmEmailTokenId,
             string confirmEmailToken,
             Guid userId,
             string email,
@@ -45,7 +46,8 @@ namespace Bazario.Identity.Domain.Users
             DateTime birthDate,
             string phoneNumber)
         {
-            RaiseDomainEvent(new UserCreatedDomainEvent(
+            RaiseDomainEvent(new UserRegisteredDomainEvent(
+                confirmEmailTokenId,
                 confirmEmailToken,
                 userId,
                 email,

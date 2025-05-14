@@ -122,6 +122,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
                 password: request.Password);
 
             user.Register(
+                confirmEmailToken.Id.Value,
                 token,
                 user.Id.Value,
                 user.Email.Value,
