@@ -1,6 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Identity;
+using Microsoft.AspNetCore.Identity;
 
 namespace Bazario.Identity.Application.Abstractions.Identity
 {
@@ -25,5 +26,7 @@ namespace Bazario.Identity.Application.Abstractions.Identity
         Task<ApplicationUser?> GetByEmailAsync(string email);
 
         Task<bool> IsEmailConfirmed(ApplicationUser user);
+
+        Task<Result> ConfirmEmailAsync(ApplicationUser user);
     }
 }

@@ -1,5 +1,7 @@
-﻿using Bazario.Identity.Application.Features.Auth.Commands.Login;
+﻿using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
+using Bazario.Identity.Application.Features.Auth.Commands.Login;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
+using Bazario.Identity.Application.Features.Auth.Queries.ValidateEmailConfirmation;
 using Bazario.Identity.WebAPI.Factories;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -21,6 +23,25 @@ namespace Bazario.Identity.WebAPI.Controllers
             _problemDetailsFactory = problemDetailsFactory;
         }
 
+        #region Queries
+
+
+        [HttpGet("validate-email-confirmation")]
+        public async Task<IActionResult> ValidateEmailConfirmationAsync(
+            [FromQuery] Guid userId,
+            [FromQuery] Guid tokenId,
+            CancellationToken cancellationToken)
+        {
+            var query = new ValidateEmailConfirmationQuery(userId, tokenId);
+
+            var queryResult = await _sender.Send(query, cancellationToken);
+
+            return queryResult.IsSuccess ? Ok(queryResult.Value) : _problemDetailsFactory.GetProblemDetails(queryResult);
+        }
+
+
+        #endregion
+
         #region Commands
 
 
@@ -41,6 +62,17 @@ namespace Bazario.Identity.WebAPI.Controllers
 
             return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
         }
+
+        [HttpPost("confirm-email")]
+        public async Task<IActionResult> ConfirmEmailAsync(
+            [FromBody] ConfirmEmailCommand command,
+            CancellationToken cancellationToken)
+        {
+            var commandResult = await _sender.Send(command, cancellationToken);
+
+            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+        }
+
 
         #endregion
     }

@@ -38,5 +38,10 @@ namespace Bazario.Identity.Domain.Users.Errors
             Error.Validation(
                 code: "User.AlreadyRegistered",
                 description: "User with this email already exists.");
+
+        public static readonly Error EmailAlreadyConfirmed =
+            Error.Validation(
+                code: "User.EmailAlreadyConfirmed",
+                description: "User's email is already confirmed.");
     }
 }

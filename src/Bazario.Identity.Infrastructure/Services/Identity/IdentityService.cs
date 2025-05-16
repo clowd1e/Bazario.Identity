@@ -43,6 +43,16 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             HandleIdentityResult(result, "Failed to add user to role.");
         }
 
+        public async Task<Result> ConfirmEmailAsync(
+            ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(user);
+
+            user.EmailConfirmed = true;
+
+            return Result.Success();
+        }
+
         public async Task CreateAsync(
             ApplicationUser user,
             string password)
