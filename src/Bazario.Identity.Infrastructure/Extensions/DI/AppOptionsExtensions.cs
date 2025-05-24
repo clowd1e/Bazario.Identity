@@ -5,6 +5,7 @@ using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Outbox.Options;
 using Bazario.AspNetCore.Shared.Options.DependencyInjection;
 using Bazario.Identity.Application.Identity.Options;
 using Bazario.Identity.Infrastructure.Authentication.Options;
+using Bazario.Identity.Infrastructure.Services.Emails.Options;
 using Bazario.Identity.Infrastructure.Services.Security.Options;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -28,6 +29,9 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
                 OutboxSettings.SectionName);
             services.ConfigureValidatableOptions<MessageBrokerSettings, MessageBrokerSettingsValidator>(
                 MessageBrokerSettings.SectionName);
+            services.ConfigureValidatableOptions<EmailLinkGeneratorSettings, EmailLinkGeneratorSettingsValidator>(
+                EmailLinkGeneratorSettings.SectionName);
+
 
             return services;
         }

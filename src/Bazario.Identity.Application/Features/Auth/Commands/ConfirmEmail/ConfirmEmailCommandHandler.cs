@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Abstractions.Data;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
 using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;

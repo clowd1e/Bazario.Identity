@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Abstractions.Data;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.DependencyInjection;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Interceptors;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Options;

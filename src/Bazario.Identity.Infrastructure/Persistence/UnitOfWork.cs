@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Abstractions.Data;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
 
 namespace Bazario.Identity.Infrastructure.Persistence
 {

@@ -8,11 +8,9 @@ namespace Bazario.Identity.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
-            var assembly = typeof(DependencyInjection).Assembly;
-
             services.ConfigureAppOptions();
 
-            services.AddMessageBroker(assembly);
+            services.AddMessageBroker();
 
             services.AddInfrastructureServices();
 
