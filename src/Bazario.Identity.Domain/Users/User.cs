@@ -57,6 +57,27 @@ namespace Bazario.Identity.Domain.Users
                 phoneNumber));
         }
 
+        public void RegisterAdmin(
+            Guid confirmEmailTokenId,
+            string confirmEmailToken,
+            Guid userId,
+            string email,
+            string firstName,
+            string lastName,
+            DateOnly birthDate,
+            string phoneNumber)
+        {
+            RaiseDomainEvent(new AdminRegisteredDomainEvent(
+                confirmEmailTokenId,
+                confirmEmailToken,
+                userId,
+                email,
+                firstName,
+                lastName,
+                birthDate,
+                phoneNumber));
+        }
+
         public static Result<User> Create(
             UserId userId,
             Email email)

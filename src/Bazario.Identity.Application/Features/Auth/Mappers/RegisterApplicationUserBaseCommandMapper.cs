@@ -1,16 +1,16 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Mappers;
-using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
+using Bazario.Identity.Application.Features.Auth.DTO;
 using Bazario.Identity.Application.Identity;
 using System.Text;
 
 namespace Bazario.Identity.Application.Features.Auth.Mappers
 {
-    internal sealed class RegisterUserCommandMapper
-        : Mapper<RegisterUserCommand, ApplicationUser>
+    internal sealed class RegisterApplicationUserBaseCommandMapper
+        : Mapper<IRegisterApplicationUserBaseCommand, ApplicationUser>
     {
         private readonly char[] forbiddenCharacters = ['\'', '-'];
 
-        public override ApplicationUser Map(RegisterUserCommand source)
+        public override ApplicationUser Map(IRegisterApplicationUserBaseCommand source)
         {
             var userId = Guid.NewGuid().ToString();
 

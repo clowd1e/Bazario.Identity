@@ -15,5 +15,9 @@ namespace Bazario.Identity.Infrastructure.Services.Emails.Options
         [Required]
         [StringLength(100)]
         public required string EmailConfirmationPath { get; set; }
+
+        [Required]
+        [StringLength(100)]
+        public required string AdminEmailConfirmationPath { get; set; }
     }
 }

@@ -1,8 +1,6 @@
-﻿using Bazario.AspNetCore.Shared.Contracts.UserRegistered;
-using Bazario.AspNetCore.Shared.Infrastructure.MessageBroker;
+﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.Identity.Application.Abstractions.Emails;
 using Bazario.Identity.Infrastructure.Services.Emails.Options;
-using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using System.Text;
 
@@ -19,12 +17,24 @@ namespace Bazario.Identity.Infrastructure.Services.Emails
             _settings = settings.Value;
         }
 
-        public string GenerateEmailConfirmationLink(Guid userId, Guid tokenId, string token)
+        public string GenerateEmailConfirmationLink(
+            Guid userId,
+            Guid tokenId,
+            string token,
+            Role role)
         {
             var sb = new StringBuilder();
 
             sb.Append($"{_settings.ClientAppUrl}/");
-            sb.Append($"{_settings.EmailConfirmationPath}?");
+            
+            var confirmationPath = role switch
+            {
+                Role.User => _settings.EmailConfirmationPath,
+                Role.Admin => _settings.AdminEmailConfirmationPath,
+                _ => throw new ArgumentOutOfRangeException(nameof(role), role, null)
+            };
+
+            sb.Append($"{confirmationPath}?");
             sb.Append($"userId={userId}");
             sb.Append($"&tokenId={tokenId}");
             sb.Append($"&token={token}");

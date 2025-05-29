@@ -2,12 +2,10 @@
 using Bazario.Identity.Application.Features.Auth.DTO;
 using MediatR;
 
-namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
+namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterAdmin
 {
-    public sealed record RegisterUserCommand(
+    public sealed record RegisterAdminCommand(
         string Email,
-        string Password,
-        string RepeatPassword,
         string FirstName,
         string LastName,
         DateOnly BirthDate,

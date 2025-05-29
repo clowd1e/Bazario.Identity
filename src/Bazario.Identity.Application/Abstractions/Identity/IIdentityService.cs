@@ -1,7 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Identity;
-using Microsoft.AspNetCore.Identity;
 
 namespace Bazario.Identity.Application.Abstractions.Identity
 {
@@ -19,6 +18,8 @@ namespace Bazario.Identity.Application.Abstractions.Identity
 
         Task CreateAsync(ApplicationUser user, string password);
 
+        Task CreateWithoutPasswordAsync(ApplicationUser user);
+
         Task DeleteAsync(ApplicationUser user);
 
         Task AssignUserToRoleAsync(ApplicationUser user, string roleName);
@@ -27,6 +28,6 @@ namespace Bazario.Identity.Application.Abstractions.Identity
 
         Task<bool> IsEmailConfirmed(ApplicationUser user);
 
-        Task<Result> ConfirmEmailAsync(ApplicationUser user);
+        Result ConfirmEmail(ApplicationUser user);
     }
 }

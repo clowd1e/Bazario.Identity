@@ -1,5 +1,6 @@
 ﻿using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
 using Bazario.Identity.Application.Features.Auth.Commands.Login;
+using Bazario.Identity.Application.Features.Auth.Commands.RegisterAdmin;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
 using Bazario.Identity.Application.Features.Auth.Queries.ValidateEmailConfirmation;
 using Bazario.Identity.WebAPI.Factories;
@@ -57,6 +58,15 @@ namespace Bazario.Identity.WebAPI.Controllers
         [HttpPost("register")]
         public async Task<IActionResult> Register(
             [FromBody] RegisterUserCommand command)
+        {
+            var commandResult = await _sender.Send(command);
+
+            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+        }
+
+        [HttpPost("register-admin")]
+        public async Task<IActionResult> RegisterAdmin(
+            [FromBody] RegisterAdminCommand command)
         {
             var commandResult = await _sender.Send(command);
 

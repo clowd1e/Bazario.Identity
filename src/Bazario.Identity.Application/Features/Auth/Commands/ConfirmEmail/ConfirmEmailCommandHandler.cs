@@ -124,7 +124,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail
 
             // Confirm the email in the identity service
 
-            var identityResult = await _identityService.ConfirmEmailAsync(identityUser);
+            var identityResult = _identityService.ConfirmEmail(identityUser);
 
             if (identityResult.IsFailure)
             {

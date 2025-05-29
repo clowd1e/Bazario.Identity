@@ -43,7 +43,7 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             HandleIdentityResult(result, "Failed to add user to role.");
         }
 
-        public async Task<Result> ConfirmEmailAsync(
+        public Result ConfirmEmail(
             ApplicationUser user)
         {
             ArgumentNullException.ThrowIfNull(user);
@@ -63,6 +63,16 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             var result = await _userManager.CreateAsync(user, password);
 
             HandleIdentityResult(result, "Failed to create user.");
+        }
+
+        public async Task CreateWithoutPasswordAsync(
+            ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+
+            var result = await _userManager.CreateAsync(user);
+
+            HandleIdentityResult(result, "Failed to create user without password.");
         }
 
         public async Task DeleteAsync(ApplicationUser user)

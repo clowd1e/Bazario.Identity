@@ -12,10 +12,10 @@ using Bazario.Identity.Domain.Users;
 using Bazario.Identity.Domain.Users.Errors;
 using MediatR;
 
-namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
+namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterAdmin
 {
-    internal sealed class RegisterUserCommandHandler
-        : IRequestHandler<RegisterUserCommand, Result>
+    internal sealed class RegisterAdminCommandHandler
+        : IRequestHandler<RegisterAdminCommand, Result>
     {
         private readonly IUserRepository _userRepository;
         private readonly IIdentityService _identityService;
@@ -27,7 +27,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
         private readonly Mapper<CreateConfirmEmailTokenRequestModel, Result<ConfirmEmailToken>> _tokenMapper;
         private readonly IUnitOfWork _unitOfWork;
 
-        public RegisterUserCommandHandler(
+        public RegisterAdminCommandHandler(
             IUserRepository userRepository,
             IIdentityService identityService,
             IConfirmEmailTokenRepository confirmEmailTokenRepository,
@@ -50,16 +50,16 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
         }
 
         public async Task<Result> Handle(
-            RegisterUserCommand request,
+            RegisterAdminCommand request,
             CancellationToken cancellationToken)
         {
-            #region User creation
+            #region Admin creation
 
-            // Map the command to a User
+            // Map the command to a Admin
 
             var applicationUser = _commandMapper.Map(request);
 
-            // Check if the user already exists
+            // Check if the admin already exists
 
             var existingUser = await _identityService.GetByEmailAsync(request.Email);
 
@@ -118,11 +118,10 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
                 user,
                 cancellationToken);
 
-            await _identityService.CreateAsync(
-                applicationUser,
-                password: request.Password);
+            await _identityService.CreateWithoutPasswordAsync(
+                applicationUser);
 
-            user.Register(
+            user.RegisterAdmin(
                 confirmEmailToken.Id.Value,
                 token,
                 user.Id.Value,
@@ -136,7 +135,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
             {
                 await _identityService.AssignUserToRoleAsync(
                     applicationUser,
-                    roleName: Role.User.ToString());
+                    roleName: Role.Admin.ToString());
 
                 await _unitOfWork.SaveChangesAsync(cancellationToken);
             }
