@@ -42,6 +42,15 @@ namespace Bazario.Identity.Application.Features.Auth.Events
                     notification.PhoneNumber),
                 cancellationToken);
 
+            _logger.LogInformation("Publishing admin registered for complaint service event for admin {Id}", notification.UserId);
+
+            await _messagePublisher.PublishAsync<AdminRegisteredForComplaintServiceEvent>(
+                new(
+                    notification.UserId,
+                    notification.FirstName,
+                    notification.LastName),
+                cancellationToken);
+
             _logger.LogInformation("Publishing send confirmation email requested event for admin {Id}", notification.UserId);
 
             var confirmationLink = _emailLinkGenerator.GenerateEmailConfirmationLink(
