@@ -15,6 +15,10 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
 
             RuleFor(x => x.Password)
                 .ValidatedPassword();
+
+            RuleFor(x => x.SessionId)
+                .NotEmpty()
+                .WithMessage("Session ID is required.");
         }
     }
 }

@@ -8,13 +8,7 @@ namespace Bazario.Identity.Application.Abstractions.Identity
     {
         Task<Result> LoginAsync(ApplicationUser user, string password);
 
-        Task PopulateRefreshTokenAsync(ApplicationUser user, string refreshToken);
-
         Task<Role> GetUserRoleAsync(ApplicationUser user);
-
-        Result ValidateRefreshToken(ApplicationUser user);
-
-        Task<Result<ApplicationUser>> GetByRefreshTokenAsync(string refreshToken);
 
         Task CreateAsync(ApplicationUser user, string password);
 
@@ -23,6 +17,8 @@ namespace Bazario.Identity.Application.Abstractions.Identity
         Task DeleteAsync(ApplicationUser user);
 
         Task AssignUserToRoleAsync(ApplicationUser user, string roleName);
+
+        Task<ApplicationUser?> GetByIdAsync(string userId);
 
         Task<ApplicationUser?> GetByEmailAsync(string email);
 

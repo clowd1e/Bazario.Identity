@@ -24,6 +24,10 @@ namespace Bazario.Identity.Infrastructure.Persistence.Configurations
                     value => Email.Create(value).Value)
                 .IsRequired();
 
+            builder.HasMany(user => user.RefreshTokens)
+                .WithOne(refreshToken => refreshToken.User)
+                .HasForeignKey(refreshToken => refreshToken.UserId);
+
             builder.HasMany(user => user.ConfirmEmailTokens)
                 .WithOne(confirmEmailToken => confirmEmailToken.User);
         }

@@ -3,6 +3,7 @@ using Bazario.AspNetCore.Shared.Infrastructure.Persistence;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Outbox;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
+using Bazario.Identity.Domain.RefreshTokens;
 using Bazario.Identity.Domain.Users;
 using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
@@ -14,6 +15,8 @@ namespace Bazario.Identity.Infrastructure.Persistence
         public DbSet<OutboxMessage> OutboxMessages { get; init; }
         
         public new DbSet<User> Users { get; init; }
+
+        public DbSet<RefreshToken> RefreshTokens { get; init; }
 
         public DbSet<ConfirmEmailToken> ConfirmEmailTokens { get; init; }
 

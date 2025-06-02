@@ -1,28 +1,27 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Mappers;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Features.Auth.DTO.RequestModels;
-using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;
+using Bazario.Identity.Application.Identity.Options.RefreshToken;
 using Bazario.Identity.Domain.Common.Timestamps;
 using Bazario.Identity.Domain.Common.TokenHashes;
-using Bazario.Identity.Domain.ConfirmEmailTokens;
-using Bazario.Identity.Domain.ConfirmEmailTokens.ValueObjects;
+using Bazario.Identity.Domain.RefreshTokens;
+using Bazario.Identity.Domain.RefreshTokens.ValueObjects;
 using Microsoft.Extensions.Options;
 
 namespace Bazario.Identity.Application.Features.Auth.Mappers
 {
-    internal sealed class CreateConfirmEmailTokenRequestMapper
-        : Mapper<CreateConfirmEmailTokenRequestModel, Result<ConfirmEmailToken>>
+    internal sealed class CreateRefreshTokenRequestMapper
+        : Mapper<CreateRefreshTokenRequestModel, Result<RefreshToken>>
     {
-        private readonly ConfirmEmailTokenSettings _settings;
+        private readonly RefreshTokenSettings _settings;
 
-        public CreateConfirmEmailTokenRequestMapper(
-            IOptions<ConfirmEmailTokenSettings> settings)
+        public CreateRefreshTokenRequestMapper(
+            IOptions<RefreshTokenSettings> settings)
         {
             _settings = settings.Value;
         }
 
-        public override Result<ConfirmEmailToken> Map(
-            CreateConfirmEmailTokenRequestModel source)
+        public override Result<RefreshToken> Map(CreateRefreshTokenRequestModel source)
         {
             // Generate token hash
 
@@ -30,14 +29,14 @@ namespace Bazario.Identity.Application.Features.Auth.Mappers
 
             if (tokenHashResult.IsFailure)
             {
-                return Result.Failure<ConfirmEmailToken>(tokenHashResult.Error);
+                return Result.Failure<RefreshToken>(tokenHashResult.Error);
             }
 
             var tokenHash = tokenHashResult.Value;
 
-            // Generate a new ConfirmEmailTokenId
+            // Generate a new sessionId
 
-            var tokenId = new ConfirmEmailTokenId(Guid.NewGuid());
+            var sessionId = new SessionId(source.SessionId);
 
             // Calculate expiration timestamp
 
@@ -48,22 +47,22 @@ namespace Bazario.Identity.Application.Features.Auth.Mappers
 
             if (expiresAtResult.IsFailure)
             {
-                return Result.Failure<ConfirmEmailToken>(expiresAtResult.Error);
+                return Result.Failure<RefreshToken>(expiresAtResult.Error);
             }
 
             var expiresAt = expiresAtResult.Value;
 
-            // Create ConfirmEmailToken
+            // Create RefreshToken
 
-            var tokenResult = ConfirmEmailToken.Create(
-                confirmEmailTokenId: tokenId,
+            var tokenResult = RefreshToken.Create(
+                sessionId: sessionId,
                 tokenHash: tokenHash,
                 expiresAt: expiresAt,
                 user: source.User);
 
             if (tokenResult.IsFailure)
             {
-                return Result.Failure<ConfirmEmailToken>(tokenResult.Error);
+                return Result.Failure<RefreshToken>(tokenResult.Error);
             }
 
             return tokenResult.Value;

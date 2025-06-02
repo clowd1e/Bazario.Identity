@@ -1,7 +1,11 @@
-﻿using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
+using Bazario.AspNetCore.Shared.Application.Mappers;
+using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Options;
+using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Identity;
+using Bazario.Identity.Domain.Users;
 using Bazario.Identity.WebAPI.Options;
 
 namespace Bazario.Identity.WebAPI.Extensions
@@ -15,6 +19,10 @@ namespace Bazario.Identity.WebAPI.Extensions
             var ownerSettings = scope.ServiceProvider.GetOptions<OwnerSettings>();
 
             var identityService = scope.ServiceProvider.GetRequiredService<IIdentityService>();
+
+            var unitOfWork = scope.ServiceProvider.GetRequiredService<IUnitOfWork>();
+
+            var userRepository = scope.ServiceProvider.GetRequiredService<IUserRepository>();
 
             var owner = new ApplicationUser()
             {
@@ -30,6 +38,21 @@ namespace Bazario.Identity.WebAPI.Extensions
             {
                 return;
             }
+
+            var userMapper = scope.ServiceProvider.GetRequiredService<Mapper<ApplicationUser, Result<User>>>();
+
+            var domainUserResult = userMapper.Map(owner);
+
+            if (domainUserResult.IsFailure)
+            {
+                throw new InvalidOperationException($"Failed to map ApplicationUser to User: {domainUserResult.Error}");
+            }
+
+            var domainUser = domainUserResult.Value;
+
+            await userRepository.InsertAsync(domainUser);
+
+            await unitOfWork.SaveChangesAsync();
 
             await identityService.CreateAsync(
                 owner,

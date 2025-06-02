@@ -31,6 +31,8 @@ namespace Bazario.Identity.Infrastructure.Persistence.Configurations
                     timestamp => timestamp.Value,
                     value => Timestamp.Create(value.ToUniversalTime()).Value);
 
+            builder.Ignore(token => token.IsActive);
+
             builder
                 .HasOne(token => token.User)
                 .WithMany(user => user.ConfirmEmailTokens)

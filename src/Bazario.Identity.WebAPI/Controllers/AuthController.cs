@@ -1,5 +1,6 @@
 ﻿using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
 using Bazario.Identity.Application.Features.Auth.Commands.Login;
+using Bazario.Identity.Application.Features.Auth.Commands.RefreshToken;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterAdmin;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
 using Bazario.Identity.Application.Features.Auth.Queries.ValidateEmailConfirmation;
@@ -49,6 +50,15 @@ namespace Bazario.Identity.WebAPI.Controllers
         [HttpPost("login")]
         public async Task<IActionResult> Login(
             [FromBody] LoginCommand command)
+        {
+            var commandResult = await _sender.Send(command);
+
+            return commandResult.IsSuccess ? Ok(commandResult.Value) : _problemDetailsFactory.GetProblemDetails(commandResult);
+        }
+
+        [HttpPost("refresh-token")]
+        public async Task<IActionResult> RefreshToken(
+            [FromBody] RefreshTokenCommand command)
         {
             var commandResult = await _sender.Send(command);
 

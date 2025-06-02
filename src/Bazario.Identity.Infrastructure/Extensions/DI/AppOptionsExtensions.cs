@@ -4,7 +4,9 @@ using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Options;
 using Bazario.AspNetCore.Shared.Infrastructure.Persistence.Outbox.Options;
 using Bazario.AspNetCore.Shared.Options.DependencyInjection;
 using Bazario.Identity.Application.Identity.Options;
-using Bazario.Identity.Infrastructure.Authentication.Options;
+using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;
+using Bazario.Identity.Application.Identity.Options.Login;
+using Bazario.Identity.Application.Identity.Options.RefreshToken;
 using Bazario.Identity.Infrastructure.Services.Emails.Options;
 using Bazario.Identity.Infrastructure.Services.Security.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -15,6 +17,8 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
     {
         public static IServiceCollection ConfigureAppOptions(this IServiceCollection services)
         {
+            services.ConfigureValidatableOptions<LoginSettings, LoginSettingsValidator>(
+                LoginSettings.SectionName);
             services.ConfigureValidatableOptions<DbSettings, DbSettingsValidator>(
                 DbSettings.SectionName);
             services.ConfigureValidatableOptions<JwtSettings, JwtSettingsValidator>(

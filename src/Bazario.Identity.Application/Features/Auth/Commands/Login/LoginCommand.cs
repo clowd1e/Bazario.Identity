@@ -6,5 +6,6 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
 {
     public sealed record LoginCommand(
         string Email,
-        string Password) : IRequest<Result<LoginResponse>>;
+        string Password,
+        Guid SessionId) : IRequest<Result<LoginResponse>>;
 }

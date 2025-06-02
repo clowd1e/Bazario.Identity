@@ -1,7 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Options;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bazario.Identity.Application.Identity.Options
+namespace Bazario.Identity.Application.Identity.Options.ConfirmEmailToken
 {
     public sealed class ConfirmEmailTokenSettings : IAppOptions
     {

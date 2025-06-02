@@ -43,5 +43,10 @@ namespace Bazario.Identity.Domain.Users.Errors
             Error.Validation(
                 code: "User.EmailAlreadyConfirmed",
                 description: "User's email is already confirmed.");
+
+        public static readonly Error MaxSessionsExceeded =
+            Error.Validation(
+                code: "User.MaxSessionsExceeded",
+                description: "The user has exceeded the maximum number of sessions allowed.");
     }
 }

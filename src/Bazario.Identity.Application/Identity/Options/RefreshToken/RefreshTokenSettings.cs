@@ -1,7 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Options;
 using System.ComponentModel.DataAnnotations;
 
-namespace Bazario.Identity.Infrastructure.Authentication.Options
+namespace Bazario.Identity.Application.Identity.Options.RefreshToken
 {
     public sealed class RefreshTokenSettings : IAppOptions
     {
@@ -9,6 +9,6 @@ namespace Bazario.Identity.Infrastructure.Authentication.Options
 
         [Required]
         [Range(1, 20)]
-        public int ExpiryTimeInDays { get; init; }
+        public int ExpirationTimeInDays { get; init; }
     }
 }

@@ -18,7 +18,6 @@ namespace Bazario.Identity.Infrastructure.Persistence.Repositories
             CancellationToken cancellationToken = default)
         {
             return await _context.Users
-                .AsNoTracking()
                 .FirstOrDefaultAsync(
                     user => user.Id == userId,
                     cancellationToken);

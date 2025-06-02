@@ -5,6 +5,7 @@ using Bazario.Identity.Application.Features.Auth.DTO.RequestModels;
 using Bazario.Identity.Application.Features.Auth.Mappers;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
+using Bazario.Identity.Domain.RefreshTokens;
 using Bazario.Identity.Domain.Users;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -16,6 +17,7 @@ namespace Bazario.Identity.Application.Extensions.DI
         {
             services.AddMapper<IRegisterApplicationUserBaseCommand, ApplicationUser, RegisterApplicationUserBaseCommandMapper>();
             services.AddMapper<ApplicationUser, Result<User>, ApplicationUserToDomainUserMapper>();
+            services.AddMapper<CreateRefreshTokenRequestModel, Result<RefreshToken>, CreateRefreshTokenRequestMapper>();
             services.AddMapper<CreateConfirmEmailTokenRequestModel, Result<ConfirmEmailToken>, CreateConfirmEmailTokenRequestMapper>();
 
             return services;

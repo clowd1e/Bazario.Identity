@@ -3,6 +3,7 @@ using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Emails;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
+using Bazario.Identity.Domain.RefreshTokens;
 using Bazario.Identity.Domain.Users.DomainEvents;
 
 namespace Bazario.Identity.Domain.Users
@@ -10,6 +11,7 @@ namespace Bazario.Identity.Domain.Users
     public sealed class User
         : AggregateRoot<UserId>
     {
+        private HashSet<RefreshToken> _refreshTokens = [];
         private HashSet<ConfirmEmailToken> _confirmEmailTokens = [];
         private Email _email;
 
@@ -35,6 +37,8 @@ namespace Bazario.Identity.Domain.Users
         }
 
         public IReadOnlyCollection<ConfirmEmailToken> ConfirmEmailTokens => _confirmEmailTokens;
+
+        public IReadOnlyCollection<RefreshToken> RefreshTokens => _refreshTokens;
 
         public void Register(
             Guid confirmEmailTokenId,
