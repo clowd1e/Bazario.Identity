@@ -1,4 +1,5 @@
-﻿using Bazario.AspNetCore.Shared.Domain.Common.Users;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Messaging;
+using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Features.Auth.DTO.Responses;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
@@ -6,12 +7,11 @@ using Bazario.Identity.Domain.ConfirmEmailTokens.Errors;
 using Bazario.Identity.Domain.ConfirmEmailTokens.ValueObjects;
 using Bazario.Identity.Domain.Users;
 using Bazario.Identity.Domain.Users.Errors;
-using MediatR;
 
 namespace Bazario.Identity.Application.Features.Auth.Queries.ValidateEmailConfirmation
 {
     internal sealed class ValidateEmailConfirmationQueryHandler
-        : IRequestHandler<ValidateEmailConfirmationQuery, Result<ValidateEmailConfirmationResponse>>
+        : IQueryHandler<ValidateEmailConfirmationQuery, ValidateEmailConfirmationResponse>
     {
         private readonly IUserRepository _userRepository;
         private readonly IConfirmEmailTokenRepository _confirmEmailTokenRepository;

@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
+using Bazario.AspNetCore.Shared.Abstractions.Messaging;
 using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
@@ -9,12 +10,11 @@ using Bazario.Identity.Domain.ConfirmEmailTokens.Errors;
 using Bazario.Identity.Domain.ConfirmEmailTokens.ValueObjects;
 using Bazario.Identity.Domain.Users;
 using Bazario.Identity.Domain.Users.Errors;
-using MediatR;
 
 namespace Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail
 {
     internal sealed class ConfirmEmailCommandHandler
-        : IRequestHandler<ConfirmEmailCommand, Result>
+        : ICommandHandler<ConfirmEmailCommand>
     {
         private readonly IConfirmEmailTokenRepository _confirmEmailTokenRepository;
         private readonly IIdentityService _identityService;

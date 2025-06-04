@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
+using Bazario.AspNetCore.Shared.Abstractions.Messaging;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Abstractions.Security;
@@ -10,14 +11,13 @@ using Bazario.Identity.Domain.RefreshTokens;
 using Bazario.Identity.Domain.RefreshTokens.Errors;
 using Bazario.Identity.Domain.RefreshTokens.ValueObjects;
 using Bazario.Identity.Domain.Users.Errors;
-using MediatR;
 using Microsoft.Extensions.Options;
 using RefreshTokens = Bazario.Identity.Domain.RefreshTokens;
 
 namespace Bazario.Identity.Application.Features.Auth.Commands.RefreshToken
 {
     internal sealed class RefreshTokenCommandHandler
-        : IRequestHandler<RefreshTokenCommand, Result<RefreshTokenResponse>>
+        : ICommandHandler<RefreshTokenCommand, RefreshTokenResponse>
     {
         private readonly ITokenService _tokenService;
         private readonly IHasher _hasher;

@@ -1,30 +1,29 @@
-﻿using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Messaging;
+using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
 using Bazario.Identity.Application.Features.Auth.Commands.Login;
 using Bazario.Identity.Application.Features.Auth.Commands.RefreshToken;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterAdmin;
 using Bazario.Identity.Application.Features.Auth.Commands.RegisterUser;
+using Bazario.Identity.Application.Features.Auth.DTO.Responses;
 using Bazario.Identity.Application.Features.Auth.Queries.ValidateEmailConfirmation;
 using Bazario.Identity.WebAPI.Factories;
-using MediatR;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Bazario.Identity.WebAPI.Controllers
 {
     [Route("api")]
     [ApiController]
-    public sealed class AuthController : ControllerBase
+    public sealed class AuthController(
+        #region Handlers
+        IQueryHandler<ValidateEmailConfirmationQuery, ValidateEmailConfirmationResponse> validateEmailConfirmationQueryHandler,
+        ICommandHandler<LoginCommand, LoginResponse> loginCommandHandler,
+        ICommandHandler<RefreshTokenCommand, RefreshTokenResponse> refreshTokenCommandHandler,
+        ICommandHandler<RegisterUserCommand> registerUserCommandHandler,
+        ICommandHandler<RegisterAdminCommand> registerAdminCommandHandler,
+        ICommandHandler<ConfirmEmailCommand> confirmEmailCommandHandler,
+        #endregion
+        ProblemDetailsFactory problemDetailsFactory) : ControllerBase
     {
-        private readonly ISender _sender;
-        private readonly ProblemDetailsFactory _problemDetailsFactory;
-
-        public AuthController(
-            ISender sender,
-            ProblemDetailsFactory problemDetailsFactory)
-        {
-            _sender = sender;
-            _problemDetailsFactory = problemDetailsFactory;
-        }
-
         #region Queries
 
 
@@ -36,9 +35,9 @@ namespace Bazario.Identity.WebAPI.Controllers
         {
             var query = new ValidateEmailConfirmationQuery(userId, tokenId);
 
-            var queryResult = await _sender.Send(query, cancellationToken);
+            var queryResult = await validateEmailConfirmationQueryHandler.Handle(query, cancellationToken);
 
-            return queryResult.IsSuccess ? Ok(queryResult.Value) : _problemDetailsFactory.GetProblemDetails(queryResult);
+            return queryResult.IsSuccess ? Ok(queryResult.Value) : problemDetailsFactory.GetProblemDetails(queryResult);
         }
 
 
@@ -49,38 +48,42 @@ namespace Bazario.Identity.WebAPI.Controllers
 
         [HttpPost("login")]
         public async Task<IActionResult> Login(
-            [FromBody] LoginCommand command)
+            [FromBody] LoginCommand command,
+            CancellationToken cancellationToken)
         {
-            var commandResult = await _sender.Send(command);
+            var commandResult = await loginCommandHandler.Handle(command, cancellationToken);
 
-            return commandResult.IsSuccess ? Ok(commandResult.Value) : _problemDetailsFactory.GetProblemDetails(commandResult);
+            return commandResult.IsSuccess ? Ok(commandResult.Value) : problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
         [HttpPost("refresh-token")]
         public async Task<IActionResult> RefreshToken(
-            [FromBody] RefreshTokenCommand command)
+            [FromBody] RefreshTokenCommand command,
+            CancellationToken cancellationToken)
         {
-            var commandResult = await _sender.Send(command);
+            var commandResult = await refreshTokenCommandHandler.Handle(command, cancellationToken);
 
-            return commandResult.IsSuccess ? Ok(commandResult.Value) : _problemDetailsFactory.GetProblemDetails(commandResult);
+            return commandResult.IsSuccess ? Ok(commandResult.Value) : problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
         [HttpPost("register")]
         public async Task<IActionResult> Register(
-            [FromBody] RegisterUserCommand command)
+            [FromBody] RegisterUserCommand command,
+            CancellationToken cancellationToken)
         {
-            var commandResult = await _sender.Send(command);
+            var commandResult = await registerUserCommandHandler.Handle(command, cancellationToken);
 
-            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+            return commandResult.IsSuccess ? NoContent() : problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
         [HttpPost("register-admin")]
         public async Task<IActionResult> RegisterAdmin(
-            [FromBody] RegisterAdminCommand command)
+            [FromBody] RegisterAdminCommand command,
+            CancellationToken cancellationToken)
         {
-            var commandResult = await _sender.Send(command);
+            var commandResult = await registerAdminCommandHandler.Handle(command, cancellationToken);
 
-            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+            return commandResult.IsSuccess ? NoContent() : problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
         [HttpPost("confirm-email")]
@@ -88,9 +91,9 @@ namespace Bazario.Identity.WebAPI.Controllers
             [FromBody] ConfirmEmailCommand command,
             CancellationToken cancellationToken)
         {
-            var commandResult = await _sender.Send(command, cancellationToken);
+            var commandResult = await confirmEmailCommandHandler.Handle(command, cancellationToken);
 
-            return commandResult.IsSuccess ? NoContent() : _problemDetailsFactory.GetProblemDetails(commandResult);
+            return commandResult.IsSuccess ? NoContent() : problemDetailsFactory.GetProblemDetails(commandResult);
         }
 
 

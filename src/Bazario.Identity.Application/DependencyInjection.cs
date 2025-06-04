@@ -1,5 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Behaviors.Validation.DependencyInjection;
-using Bazario.AspNetCore.Shared.Application.MediatR.DependencyInjection;
+using Bazario.AspNetCore.Shared.Application.DomainEvents.DependencyInjection;
+using Bazario.AspNetCore.Shared.Application.Messaging.DependencyInjection;
 using Bazario.Identity.Application.Extensions.DI;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -11,7 +12,9 @@ namespace Bazario.Identity.Application
         {
             var assembly = typeof(DependencyInjection).Assembly;
 
-            services.AddMediatRServices(assembly);
+            services.AddMessaging(assembly);
+
+            services.AddDomainEventHandlers(assembly);
 
             services.AddValidationPipelineBehavior();
 

@@ -1,10 +1,9 @@
-﻿using Bazario.AspNetCore.Shared.Results;
-using MediatR;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Messaging;
 
 namespace Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail
 {
     public sealed record ConfirmEmailCommand(
         Guid UserId,
         Guid TokenId,
-        string Token) : IRequest<Result>;
+        string Token) : ICommand;
 }

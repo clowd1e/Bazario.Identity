@@ -1,17 +1,17 @@
-﻿using Bazario.AspNetCore.Shared.Abstractions.MessageBroker;
+﻿using Bazario.AspNetCore.Shared.Abstractions.DomainEvents;
+using Bazario.AspNetCore.Shared.Abstractions.MessageBroker;
 using Bazario.AspNetCore.Shared.Contracts.AdminRegistered;
 using Bazario.AspNetCore.Shared.Contracts.UserRegistered;
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.Identity.Application.Abstractions.Emails;
 using Bazario.Identity.Domain.Users.DomainEvents;
-using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bazario.Identity.Application.Features.Auth.Events
 {
     internal sealed class AdminRegisteredDomainEventHandler
-        : INotificationHandler<AdminRegisteredDomainEvent>
+        : IDomainEventHandler<AdminRegisteredDomainEvent>
     {
         private readonly ILogger<AdminRegisteredDomainEventHandler> _logger;
         private readonly IMessagePublisher _messagePublisher;
