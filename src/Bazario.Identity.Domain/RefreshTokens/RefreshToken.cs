@@ -71,7 +71,7 @@ namespace Bazario.Identity.Domain.RefreshTokens
         public Result Validate(
             TokenHash tokenHash)
         {
-            if (_expiresAt.Value <= DateTime.UtcNow)
+            if (_expiresAt <= Timestamp.UtcNow())
             {
                 return Result.Failure(RefreshTokenErrors.TokenExpired);
             }

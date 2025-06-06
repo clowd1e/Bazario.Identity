@@ -6,6 +6,7 @@ using Bazario.AspNetCore.Shared.Options.DependencyInjection;
 using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;
 using Bazario.Identity.Application.Identity.Options.Login;
 using Bazario.Identity.Application.Identity.Options.RefreshToken;
+using Bazario.Identity.Infrastructure.BackgroundJobs.Options;
 using Bazario.Identity.Infrastructure.Services.Emails.Options;
 using Bazario.Identity.Infrastructure.Services.Security.Options;
 using Bazario.Identity.WebAPI.Options;
@@ -26,6 +27,7 @@ namespace Bazario.Identity.WebAPI.Extensions
             serviceProvider.ValidateOptionsOnStart<OutboxSettings>();
             serviceProvider.ValidateOptionsOnStart<MessageBrokerSettings>();
             serviceProvider.ValidateOptionsOnStart<EmailLinkGeneratorSettings>();
+            serviceProvider.ValidateOptionsOnStart<ExpiredRefreshTokensRemovalSettings>();
 
             return serviceProvider;
         }

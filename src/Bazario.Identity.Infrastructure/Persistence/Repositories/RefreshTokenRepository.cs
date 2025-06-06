@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Domain.Common.Users;
+using Bazario.Identity.Domain.Common.Timestamps;
 using Bazario.Identity.Domain.RefreshTokens;
 using Bazario.Identity.Domain.RefreshTokens.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -30,6 +31,14 @@ namespace Bazario.Identity.Infrastructure.Persistence.Repositories
             return await _context.RefreshTokens
                 .Include(token => token.User)
                 .FirstOrDefaultAsync(token => token.SessionId == sessionId, cancellationToken);
+        }
+
+        public async Task<IEnumerable<RefreshToken>> GetExpiredRefreshTokensAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.RefreshTokens
+                .Where(token => token.ExpiresAt <= Timestamp.UtcNow())
+                .ToListAsync(cancellationToken);
         }
 
         public async Task<int> GetUserSessionsCountAsync(

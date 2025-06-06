@@ -7,6 +7,7 @@ using Bazario.Identity.Application.Identity.Options;
 using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;
 using Bazario.Identity.Application.Identity.Options.Login;
 using Bazario.Identity.Application.Identity.Options.RefreshToken;
+using Bazario.Identity.Infrastructure.BackgroundJobs.Options;
 using Bazario.Identity.Infrastructure.Services.Emails.Options;
 using Bazario.Identity.Infrastructure.Services.Security.Options;
 using Microsoft.Extensions.DependencyInjection;
@@ -35,7 +36,8 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
                 MessageBrokerSettings.SectionName);
             services.ConfigureValidatableOptions<EmailLinkGeneratorSettings, EmailLinkGeneratorSettingsValidator>(
                 EmailLinkGeneratorSettings.SectionName);
-
+            services.ConfigureValidatableOptions<ExpiredRefreshTokensRemovalSettings, ExpiredRefreshTokensRemovalSettingsValidator>(
+                ExpiredRefreshTokensRemovalSettings.SectionName);
 
             return services;
         }

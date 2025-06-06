@@ -1,5 +1,4 @@
 ﻿using Bazario.AspNetCore.Shared.Domain.Common.Users;
-using Bazario.Identity.Domain.Common.TokenHashes;
 using Bazario.Identity.Domain.RefreshTokens.ValueObjects;
 
 namespace Bazario.Identity.Domain.RefreshTokens
@@ -16,6 +15,9 @@ namespace Bazario.Identity.Domain.RefreshTokens
 
         Task<int> GetUserSessionsCountAsync(
             UserId userId,
+            CancellationToken cancellationToken = default);
+
+        Task<IEnumerable<RefreshToken>> GetExpiredRefreshTokensAsync(
             CancellationToken cancellationToken = default);
 
         Task DeleteAsync(RefreshToken refreshToken);
