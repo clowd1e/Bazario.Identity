@@ -1,3 +1,5 @@
+using Bazario.AspNetCore.Shared.Api.Factories.DependencyInjection;
+using Bazario.AspNetCore.Shared.Api.Middleware.DependencyInjection;
 using Bazario.AspNetCore.Shared.Authentication.DependencyInjection;
 using Bazario.AspNetCore.Shared.Authorization.DependencyInjection;
 using Bazario.Identity.Application;
@@ -5,7 +7,6 @@ using Bazario.Identity.Infrastructure;
 using Bazario.Identity.Infrastructure.Extensions;
 using Bazario.Identity.WebAPI.Extensions;
 using Bazario.Identity.WebAPI.Extensions.DI;
-using Bazario.Identity.WebAPI.Factories;
 using Scalar.AspNetCore;
 
 var builder = WebApplication.CreateBuilder(args);
@@ -22,13 +23,13 @@ builder.Services.AddPresentationOptions();
 builder.Services.ConfigureAuthentication();
 builder.Services.ConfigureAuthorization();
 
-builder.Services.AddSingleton<ProblemDetailsFactory>();
+builder.Services.AddProblemDetailsFactory();
 
 var app = builder.Build();
 
 app.Services.ValidateAppOptions();
 
-app.AddMiddleware();
+app.UseExceptionHandlingMiddleware();
 
 app.ApplyMigrations();
 
