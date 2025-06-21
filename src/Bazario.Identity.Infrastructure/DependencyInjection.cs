@@ -20,6 +20,8 @@ namespace Bazario.Identity.Infrastructure
 
             services.ConfigureAppBackgroundJobs();
 
+            services.AddMessageConsumers();
+
             return services;
         }
     }

@@ -112,6 +112,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
 
             var existingRefreshToken = await _refreshTokenRepository.GetBySessionIdWithUserAsync(
                 sessionId,
+                userId,
                 cancellationToken);
 
             Result? result;

@@ -7,6 +7,7 @@ namespace Bazario.Identity.Domain.RefreshTokens
     {
         Task<RefreshToken?> GetBySessionIdWithUserAsync(
             SessionId sessionId,
+            UserId userId,
             CancellationToken cancellationToken = default);
 
         Task InsertAsync(

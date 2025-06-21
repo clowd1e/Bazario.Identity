@@ -25,5 +25,7 @@ namespace Bazario.Identity.Application.Abstractions.Identity
         Task<bool> IsEmailConfirmed(ApplicationUser user);
 
         Result ConfirmEmail(ApplicationUser user);
+
+        Task<Result> UpdateAsync(ApplicationUser user);
     }
 }

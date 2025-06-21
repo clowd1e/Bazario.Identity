@@ -26,11 +26,14 @@ namespace Bazario.Identity.Infrastructure.Persistence.Repositories
 
         public async Task<RefreshToken?> GetBySessionIdWithUserAsync(
             SessionId sessionId,
+            UserId userId,
             CancellationToken cancellationToken = default)
         {
             return await _context.RefreshTokens
                 .Include(token => token.User)
-                .FirstOrDefaultAsync(token => token.SessionId == sessionId, cancellationToken);
+                .FirstOrDefaultAsync(
+                    token => token.SessionId == sessionId &&
+                        token.UserId == userId, cancellationToken);
         }
 
         public async Task<IEnumerable<RefreshToken>> GetExpiredRefreshTokensAsync(

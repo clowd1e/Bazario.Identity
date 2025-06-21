@@ -140,6 +140,17 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             return Result.Success();
         }
 
+        public async Task<Result> UpdateAsync(ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+
+            var result = await _userManager.UpdateAsync(user);
+
+            HandleIdentityResult(result, "Failed to update user.");
+
+            return Result.Success();
+        }
+
         private void HandleIdentityResult(IdentityResult result, string errorMessage)
         {
             if (result.Succeeded)

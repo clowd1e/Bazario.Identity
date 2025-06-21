@@ -2,6 +2,7 @@
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
+using Bazario.Identity.Application.Exceptions;
 using Bazario.Identity.Application.Identity;
 using Bazario.Identity.Domain.Users.Errors;
 using Microsoft.Extensions.Options;
@@ -61,6 +62,21 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
             return Result.Success();
         }
 
+        public Guid GetUserIdOutOfAccessToken(string accessToken)
+        {
+            var jwtToken = GetStringOutOfJwtToken(accessToken);
+
+            var userIdClaim = jwtToken.Claims.FirstOrDefault(
+                c => c.Type == JwtRegisteredClaimNames.Sub);
+
+            if (userIdClaim is null)
+            {
+                throw new NullTokenClaimException(JwtRegisteredClaimNames.Sub);
+            }
+
+            return new Guid(userIdClaim.Value); 
+        }
+
         public string GenerateRefreshToken()
         {
             return Convert.ToBase64String(RandomNumberGenerator.GetBytes(64));
@@ -87,6 +103,11 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
         private string GetJwtTokenString(JwtSecurityToken token)
         {
             return new JwtSecurityTokenHandler().WriteToken(token);
+        }
+
+        private JwtSecurityToken GetStringOutOfJwtToken(string token)
+        {
+            return new JwtSecurityTokenHandler().ReadJwtToken(token);
         }
 
         private Claim[] GenerateClaims(ApplicationUser user, Role role)

@@ -5,5 +5,9 @@
         public DataInconsistencyException()
             : base("Data inconsistency detected.")
         { }
+
+        public DataInconsistencyException(string message)
+            : base(message)
+        { }
     }
 }

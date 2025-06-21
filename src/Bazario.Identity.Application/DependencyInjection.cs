@@ -1,7 +1,7 @@
 ﻿using Bazario.AspNetCore.Shared.Application.Behaviors.Validation.DependencyInjection;
 using Bazario.AspNetCore.Shared.Application.DomainEvents.DependencyInjection;
+using Bazario.AspNetCore.Shared.Application.Mappers.DependencyInjection;
 using Bazario.AspNetCore.Shared.Application.Messaging.DependencyInjection;
-using Bazario.Identity.Application.Extensions.DI;
 using Microsoft.Extensions.DependencyInjection;
 
 namespace Bazario.Identity.Application
@@ -20,7 +20,7 @@ namespace Bazario.Identity.Application
 
             services.AddValidators(assembly);
 
-            services.AddMappers();
+            services.AddMappers(assembly);
 
             return services;
         }

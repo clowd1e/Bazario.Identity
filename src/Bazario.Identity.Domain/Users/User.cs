@@ -90,5 +90,12 @@ namespace Bazario.Identity.Domain.Users
                 userId,
                 email);
         }
+
+        public void Update(Email email)
+        {
+            ArgumentNullException.ThrowIfNull(email, nameof(email));
+
+            Email = email;
+        }
     }
 }

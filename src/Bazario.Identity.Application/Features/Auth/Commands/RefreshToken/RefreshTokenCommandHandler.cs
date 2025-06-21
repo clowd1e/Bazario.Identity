@@ -1,5 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
 using Bazario.AspNetCore.Shared.Abstractions.Messaging;
+using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Abstractions.Security;
@@ -56,12 +57,15 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RefreshToken
                 return Result.Failure<RefreshTokenResponse>(accessValidationResult.Error);
             }
 
+            var userId = new UserId(_tokenService.GetUserIdOutOfAccessToken(request.AccessToken));
+
             // Get refresh token by session ID
 
             var sessionId = new SessionId(request.SessionId);
 
             var refreshToken = await _refreshTokenRepository.GetBySessionIdWithUserAsync(
                 sessionId,
+                userId,
                 cancellationToken);
 
             if (refreshToken is null)
