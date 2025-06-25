@@ -4,7 +4,7 @@ namespace Bazario.Identity.Application.Extensions.Validation
 {
     public static class PasswordValidationExtensions
     {
-        public static IRuleBuilderOptions<T, string?> ValidatedPassword<T>(
+        public static IRuleBuilderOptions<T, string?> ValidPassword<T>(
             this IRuleBuilder<T, string?> ruleBuilder)
         {
             var options = ruleBuilder

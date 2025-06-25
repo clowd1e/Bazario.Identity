@@ -1,5 +1,6 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Messaging;
 using Bazario.AspNetCore.Shared.Api.Factories;
+using Bazario.Identity.Application.Features.Auth.Commands.ChangePassword;
 using Bazario.Identity.Application.Features.Auth.Commands.ConfirmEmail;
 using Bazario.Identity.Application.Features.Auth.Commands.Login;
 using Bazario.Identity.Application.Features.Auth.Commands.RefreshToken;
@@ -87,6 +88,17 @@ namespace Bazario.Identity.WebAPI.Controllers
         public async Task<IActionResult> ConfirmEmailAsync(
             [FromServices] ICommandHandler<ConfirmEmailCommand> commandHandler,
             [FromBody] ConfirmEmailCommand command,
+            CancellationToken cancellationToken)
+        {
+            var commandResult = await commandHandler.Handle(command, cancellationToken);
+
+            return commandResult.IsSuccess ? NoContent() : problemDetailsFactory.GetProblemDetails(commandResult);
+        }
+
+        [HttpPost("change-password")]
+        public async Task<IActionResult> ChangePasswordAsync(
+            [FromServices] ICommandHandler<ChangePasswordCommand> commandHandler,
+            [FromBody] ChangePasswordCommand command,
             CancellationToken cancellationToken)
         {
             var commandResult = await commandHandler.Handle(command, cancellationToken);

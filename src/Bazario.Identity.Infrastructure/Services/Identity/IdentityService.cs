@@ -33,6 +33,25 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             HandleIdentityResult(result, "Failed to add user to role.");
         }
 
+        public async Task<Result> ChangePassword(ApplicationUser user, string oldPassword, string newPassword)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+            ArgumentException.ThrowIfNullOrWhiteSpace(oldPassword, nameof(oldPassword));
+            ArgumentException.ThrowIfNullOrWhiteSpace(newPassword, nameof(newPassword));
+
+            var result = await _userManager.ChangePasswordAsync(user, oldPassword, newPassword);
+
+            if (!result.Succeeded)
+            {
+                var errors = result.Errors.Select(x => x.Description);
+                var errorsString = string.Join(Environment.NewLine, errors);
+
+                return Result.Failure(UserErrors.ChangePasswordFailed(errorsString));
+            }
+
+            return Result.Success();
+        }
+
         public Result ConfirmEmail(
             ApplicationUser user)
         {

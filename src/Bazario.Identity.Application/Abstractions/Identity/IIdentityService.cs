@@ -8,6 +8,8 @@ namespace Bazario.Identity.Application.Abstractions.Identity
     {
         Task<Result> LoginAsync(ApplicationUser user, string password);
 
+        Task<Result> ChangePassword(ApplicationUser user, string oldPassword, string newPassword);
+
         Task<Role> GetUserRoleAsync(ApplicationUser user);
 
         Task CreateAsync(ApplicationUser user, string password);

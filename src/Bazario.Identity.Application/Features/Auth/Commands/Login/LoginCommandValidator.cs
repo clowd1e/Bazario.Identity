@@ -14,7 +14,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
                 .Length(5, 50);
 
             RuleFor(x => x.Password)
-                .ValidatedPassword();
+                .ValidPassword();
 
             RuleFor(x => x.SessionId)
                 .NotEmpty()

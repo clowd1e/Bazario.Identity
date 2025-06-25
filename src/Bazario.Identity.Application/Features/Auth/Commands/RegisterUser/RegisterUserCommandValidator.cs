@@ -16,7 +16,7 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RegisterUser
                 .EmailAddress();
 
             RuleFor(x => x.Password)
-                .ValidatedPassword();
+                .ValidPassword();
 
             RuleFor(x => x.RepeatPassword)
                 .NotEmpty()

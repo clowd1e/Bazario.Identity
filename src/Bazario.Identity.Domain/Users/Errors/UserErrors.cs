@@ -48,5 +48,10 @@ namespace Bazario.Identity.Domain.Users.Errors
             Error.Validation(
                 code: "User.MaxSessionsExceeded",
                 description: "The user has exceeded the maximum number of sessions allowed.");
+
+        public static Error ChangePasswordFailed(string errors)
+            => Error.Validation(
+                code: "User.ChangePasswordFailed",
+                description: $"Failed to change password. Errors: {errors}");
     }
 }
