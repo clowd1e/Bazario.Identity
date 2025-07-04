@@ -132,8 +132,8 @@ namespace Bazario.Identity.Infrastructure.Services.Authentication
                 ValidIssuer = _jwtSettings.Issuer,
                 ValidAudience = _jwtSettings.Audience,
                 ValidAlgorithms = [_jwtSettings.SecurityAlgorithm],
-                ClockSkew = TimeSpan.Zero,
-                IssuerSigningKey = _symmetricSecurityKey
+                IssuerSigningKey = _symmetricSecurityKey,
+                RoleClaimType = "role"
             };
         }
     }
