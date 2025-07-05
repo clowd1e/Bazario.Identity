@@ -49,6 +49,11 @@ namespace Bazario.Identity.Domain.Users.Errors
                 code: "User.MaxSessionsExceeded",
                 description: "The user has exceeded the maximum number of sessions allowed.");
 
+        public static readonly Error Banned =
+            Error.Validation(
+                code: "User.Banned",
+                description: "The user is banned and cannot perform this action.");
+
         public static Error ChangePasswordFailed(string errors)
             => Error.Validation(
                 code: "User.ChangePasswordFailed",

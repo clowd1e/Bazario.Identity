@@ -8,7 +8,7 @@
 
   <ItemGroup>
     <PackageReference Include="Bazario.AspNetCore.Shared.Authentication" Version="1.0.2" />
-    <PackageReference Include="Bazario.AspNetCore.Shared.Infrastructure" Version="1.4.2" />
+    <PackageReference Include="Bazario.AspNetCore.Shared.Infrastructure" Version="1.4.3" />
     <PackageReference Include="Bazario.AspNetCore.Shared.Options" Version="1.0.1" />
     <PackageReference Include="Microsoft.AspNetCore.Http.Abstractions" Version="2.3.0" />
     <PackageReference Include="Microsoft.AspNetCore.Identity" Version="2.3.1" />

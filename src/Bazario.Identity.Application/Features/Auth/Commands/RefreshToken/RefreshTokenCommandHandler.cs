@@ -83,6 +83,11 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.RefreshToken
                 return Result.Failure<RefreshTokenResponse>(UserErrors.NotFound);
             }
 
+            if (applicationUser.IsBanned)
+            {
+                return Result.Failure<RefreshTokenResponse>(UserErrors.Banned);
+            }
+
             // Hash the refresh token
 
             var refreshTokenHash = _hasher.Hash(request.RefreshToken);

@@ -29,5 +29,7 @@ namespace Bazario.Identity.Application.Abstractions.Identity
         Result ConfirmEmail(ApplicationUser user);
 
         Task<Result> UpdateAsync(ApplicationUser user);
+
+        Result BanUserAsync(ApplicationUser user);
     }
 }

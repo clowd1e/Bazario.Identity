@@ -69,6 +69,11 @@ namespace Bazario.Identity.Application.Features.Auth.Commands.Login
                 return Result.Failure<LoginResponse>(UserErrors.NotFound);
             }
 
+            if (applicationUser.IsBanned)
+            {
+                return Result.Failure<LoginResponse>(UserErrors.Banned);
+            }
+
             var loginResult = await _identityService.LoginAsync(
                 applicationUser,
                 password: request.Password);

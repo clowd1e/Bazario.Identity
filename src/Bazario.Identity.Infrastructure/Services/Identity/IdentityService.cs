@@ -33,6 +33,15 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             HandleIdentityResult(result, "Failed to add user to role.");
         }
 
+        public Result BanUserAsync(ApplicationUser user)
+        {
+            ArgumentNullException.ThrowIfNull(user, nameof(user));
+
+            user.IsBanned = true;
+
+            return Result.Success();
+        }
+
         public async Task<Result> ChangePassword(ApplicationUser user, string oldPassword, string newPassword)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));

@@ -38,7 +38,7 @@ namespace Bazario.Identity.Application.Features.Auth.Events
                     notification.LastName,
                     notification.BirthDate,
                     notification.PhoneNumber),
-                cancellationToken);
+                cancellationToken: cancellationToken);
 
             _logger.LogInformation("Publishing user registered for listing service event for user {Id}", notification.UserId);
 
@@ -48,7 +48,7 @@ namespace Bazario.Identity.Application.Features.Auth.Events
                     notification.FirstName,
                     notification.LastName,
                     notification.PhoneNumber),
-                cancellationToken);
+                cancellationToken: cancellationToken);
 
             _logger.LogInformation("Publishing send confirmation email requested event for user {Id}", notification.UserId);
 
@@ -61,7 +61,7 @@ namespace Bazario.Identity.Application.Features.Auth.Events
                 new(
                     notification.Email,
                     confirmationLink),
-                cancellationToken);
+                cancellationToken: cancellationToken);
         }
     }
 }
