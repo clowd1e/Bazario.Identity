@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Mappers;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Mappers;
 using Bazario.AspNetCore.Shared.Results;
 using Bazario.Identity.Application.Features.Auth.DTO.RequestModels;
 using Bazario.Identity.Application.Identity.Options.ConfirmEmailToken;

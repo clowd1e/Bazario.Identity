@@ -7,8 +7,8 @@
   </PropertyGroup>
 
   <ItemGroup>
-    <PackageReference Include="Bazario.AspNetCore.Shared.Abstractions" Version="1.0.4" />
-    <PackageReference Include="Bazario.AspNetCore.Shared.Application" Version="1.1.2" />
+    <PackageReference Include="Bazario.AspNetCore.Shared.Abstractions" Version="1.0.5" />
+    <PackageReference Include="Bazario.AspNetCore.Shared.Application" Version="1.1.3" />
     <PackageReference Include="Bazario.AspNetCore.Shared.Authorization" Version="1.0.2" />
     <PackageReference Include="Bazario.AspNetCore.Shared.Contracts" Version="1.0.1" />
     <PackageReference Include="Bazario.AspNetCore.Shared.Options" Version="1.0.1" />

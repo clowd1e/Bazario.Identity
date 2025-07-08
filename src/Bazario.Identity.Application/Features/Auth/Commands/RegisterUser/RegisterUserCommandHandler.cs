@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
+using Bazario.AspNetCore.Shared.Abstractions.Mappers;
 using Bazario.AspNetCore.Shared.Abstractions.Messaging;
 using Bazario.AspNetCore.Shared.Application.Mappers;
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;

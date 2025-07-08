@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Mappers;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Mappers;
 using Bazario.Identity.Application.Features.Auth.DTO.RequestModels;
 using Bazario.Identity.Application.Helpers;
 using Bazario.Identity.Application.Identity;

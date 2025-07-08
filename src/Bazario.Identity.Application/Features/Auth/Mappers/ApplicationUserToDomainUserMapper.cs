@@ -1,4 +1,4 @@
-﻿using Bazario.AspNetCore.Shared.Application.Mappers;
+﻿using Bazario.AspNetCore.Shared.Abstractions.Mappers;
 using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Emails;
 using Bazario.AspNetCore.Shared.Results;
