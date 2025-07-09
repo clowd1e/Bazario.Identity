@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Abstractions.Data;
+using Bazario.AspNetCore.Shared.Abstractions.MessageBroker;
 using Bazario.AspNetCore.Shared.Domain.Common.Users;
 using Bazario.Identity.Application.Abstractions.Identity;
 using Bazario.Identity.Application.Identity;
@@ -13,17 +14,20 @@ namespace Bazario.Identity.Infrastructure.BackgroundJobs
     {
         private readonly IIdentityService _identityService;
         private readonly IUserRepository _userRepository;
+        private readonly IMessagePublisher _messagePublisher;
         private readonly IUnitOfWork _unitOfWork;
         private readonly ILogger<RemoveUsersWithUnconfirmedEmailsBackgroundJob> _logger;
 
         public RemoveUsersWithUnconfirmedEmailsBackgroundJob(
             IIdentityService identityService,
             IUserRepository userRepository,
+            IMessagePublisher messagePublisher,
             IUnitOfWork unitOfWork,
             ILogger<RemoveUsersWithUnconfirmedEmailsBackgroundJob> logger)
         {
             _identityService = identityService;
             _userRepository = userRepository;
+            _messagePublisher = messagePublisher;
             _unitOfWork = unitOfWork;
             _logger = logger;
         }
@@ -64,6 +68,8 @@ namespace Bazario.Identity.Infrastructure.BackgroundJobs
             {
                 return;
             }
+
+            user.Delete();
 
             await _identityService.DeleteAsync(identityUser);
             await _userRepository.Delete(user);

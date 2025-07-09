@@ -3,7 +3,6 @@ using Bazario.AspNetCore.Shared.Abstractions.MessageBroker;
 using Bazario.AspNetCore.Shared.Contracts.UserRegistered;
 using Bazario.Identity.Application.Abstractions.Emails;
 using Bazario.Identity.Domain.Users.DomainEvents;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bazario.Identity.Application.Features.Auth.Events
@@ -15,51 +14,52 @@ namespace Bazario.Identity.Application.Features.Auth.Events
         private readonly IMessagePublisher _messagePublisher;
         private readonly IEmailLinkGenerator _emailLinkGenerator;
 
-        public UserRegisteredDomainEventHandler(IServiceProvider sp)
+        public UserRegisteredDomainEventHandler(
+            ILogger<UserRegisteredDomainEventHandler> logger,
+            IMessagePublisher messagePublisher,
+            IEmailLinkGenerator emailLinkGenerator)
         {
-            _logger = sp.GetRequiredService<ILogger<UserRegisteredDomainEventHandler>>();
-
-            _messagePublisher = sp.GetRequiredService<IMessagePublisher>();
-
-            _emailLinkGenerator = sp.GetRequiredService<IEmailLinkGenerator>();
+            _logger = logger;
+            _messagePublisher = messagePublisher;
+            _emailLinkGenerator = emailLinkGenerator;
         }
 
         public async Task Handle(
-            UserRegisteredDomainEvent notification,
+            UserRegisteredDomainEvent domainEvent,
             CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Publishing user registered for user service event for user {Id}", notification.UserId);
+            _logger.LogInformation("Publishing user registered for user service event for user {Id}", domainEvent.UserId);
 
             await _messagePublisher.PublishAsync<UserRegisteredForUserServiceEvent>(
                 new(
-                    notification.UserId,
-                    notification.Email,
-                    notification.FirstName,
-                    notification.LastName,
-                    notification.BirthDate,
-                    notification.PhoneNumber),
+                    domainEvent.UserId,
+                    domainEvent.Email,
+                    domainEvent.FirstName,
+                    domainEvent.LastName,
+                    domainEvent.BirthDate,
+                    domainEvent.PhoneNumber),
                 cancellationToken: cancellationToken);
 
-            _logger.LogInformation("Publishing user registered for listing service event for user {Id}", notification.UserId);
+            _logger.LogInformation("Publishing user registered for listing service event for user {Id}", domainEvent.UserId);
 
             await _messagePublisher.PublishAsync<UserRegisteredForListingServiceEvent>(
                 new(
-                    notification.UserId,
-                    notification.FirstName,
-                    notification.LastName,
-                    notification.PhoneNumber),
+                    domainEvent.UserId,
+                    domainEvent.FirstName,
+                    domainEvent.LastName,
+                    domainEvent.PhoneNumber),
                 cancellationToken: cancellationToken);
 
-            _logger.LogInformation("Publishing send confirmation email requested event for user {Id}", notification.UserId);
+            _logger.LogInformation("Publishing send confirmation email requested event for user {Id}", domainEvent.UserId);
 
             var confirmationLink = _emailLinkGenerator.GenerateEmailConfirmationLink(
-                notification.UserId,
-                notification.ConfirmEmailTokenId,
-                notification.ConfirmEmailToken);
+                domainEvent.UserId,
+                domainEvent.ConfirmEmailTokenId,
+                domainEvent.ConfirmEmailToken);
 
             await _messagePublisher.PublishAsync<SendConfirmationEmailRequestedEvent>(
                 new(
-                    notification.Email,
+                    domainEvent.Email,
                     confirmationLink),
                 cancellationToken: cancellationToken);
         }

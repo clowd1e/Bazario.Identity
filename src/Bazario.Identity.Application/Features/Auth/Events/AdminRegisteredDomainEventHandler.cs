@@ -5,7 +5,6 @@ using Bazario.AspNetCore.Shared.Contracts.UserRegistered;
 using Bazario.AspNetCore.Shared.Domain.Common.Users.Roles;
 using Bazario.Identity.Application.Abstractions.Emails;
 using Bazario.Identity.Domain.Users.DomainEvents;
-using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
 namespace Bazario.Identity.Application.Features.Auth.Events
@@ -17,51 +16,52 @@ namespace Bazario.Identity.Application.Features.Auth.Events
         private readonly IMessagePublisher _messagePublisher;
         private readonly IEmailLinkGenerator _emailLinkGenerator;
 
-        public AdminRegisteredDomainEventHandler(IServiceProvider sp)
+        public AdminRegisteredDomainEventHandler(
+            ILogger<AdminRegisteredDomainEventHandler> logger,
+            IMessagePublisher messagePublisher,
+            IEmailLinkGenerator emailLinkGenerator)
         {
-            _logger = sp.GetRequiredService<ILogger<AdminRegisteredDomainEventHandler>>();
-
-            _messagePublisher = sp.GetRequiredService<IMessagePublisher>();
-
-            _emailLinkGenerator = sp.GetRequiredService<IEmailLinkGenerator>();
+            _logger = logger;
+            _messagePublisher = messagePublisher;
+            _emailLinkGenerator = emailLinkGenerator;
         }
 
         public async Task Handle(
-            AdminRegisteredDomainEvent notification,
+            AdminRegisteredDomainEvent domainEvent,
             CancellationToken cancellationToken)
         {
-            _logger.LogInformation("Publishing admin registered for user service event for admin {Id}", notification.UserId);
+            _logger.LogInformation("Publishing admin registered for user service event for admin {Id}", domainEvent.UserId);
 
             await _messagePublisher.PublishAsync<AdminRegisteredForUserServiceEvent>(
                 new(
-                    notification.UserId,
-                    notification.Email,
-                    notification.FirstName,
-                    notification.LastName,
-                    notification.BirthDate,
-                    notification.PhoneNumber),
+                    domainEvent.UserId,
+                    domainEvent.Email,
+                    domainEvent.FirstName,
+                    domainEvent.LastName,
+                    domainEvent.BirthDate,
+                    domainEvent.PhoneNumber),
                 cancellationToken: cancellationToken);
 
-            _logger.LogInformation("Publishing admin registered for complaint service event for admin {Id}", notification.UserId);
+            _logger.LogInformation("Publishing admin registered for complaint service event for admin {Id}", domainEvent.UserId);
 
             await _messagePublisher.PublishAsync<AdminRegisteredForComplaintServiceEvent>(
                 new(
-                    notification.UserId,
-                    notification.FirstName,
-                    notification.LastName),
+                    domainEvent.UserId,
+                    domainEvent.FirstName,
+                    domainEvent.LastName),
                 cancellationToken: cancellationToken);
 
-            _logger.LogInformation("Publishing send confirmation email requested event for admin {Id}", notification.UserId);
+            _logger.LogInformation("Publishing send confirmation email requested event for admin {Id}", domainEvent.UserId);
 
             var confirmationLink = _emailLinkGenerator.GenerateEmailConfirmationLink(
-                notification.UserId,
-                notification.ConfirmEmailTokenId,
-                notification.ConfirmEmailToken,
+                domainEvent.UserId,
+                domainEvent.ConfirmEmailTokenId,
+                domainEvent.ConfirmEmailToken,
                 role: Role.Admin);
 
             await _messagePublisher.PublishAsync<SendConfirmationEmailRequestedEvent>(
                 new(
-                    notification.Email,
+                    domainEvent.Email,
                     confirmationLink),
                 cancellationToken: cancellationToken);
         }

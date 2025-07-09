@@ -97,5 +97,10 @@ namespace Bazario.Identity.Domain.Users
 
             Email = email;
         }
+
+        public void Delete()
+        {
+            RaiseDomainEvent(new UserDeletedDomainEvent(Id.Value));
+        }
     }
 }
