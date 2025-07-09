@@ -16,6 +16,7 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
             List<Action<IServiceCollection, IServiceCollectionQuartzConfigurator>> jobConfigurations = [
                 SharedJobs.ConfigureProcessOutboxMessagesJob<AppDbContext>,
                 ConfigureRemoveExpiredRefreshTokensBackgroundJob,
+                ConfigureRemoveExpiredConfirmEmailTokensBackgroundJob,
                 ConfigureRemoveUsersWithUnconfirmedEmailsBackgroundJob];
 
             services.AddBackgroundJobs([.. jobConfigurations]);
@@ -35,6 +36,24 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
 
             configurator
                 .AddJob<RemoveExpiredRefreshTokensBackgroundJob>(jobKey)
+                .AddTrigger(
+                    trigger => trigger.ForJob(jobKey)
+                        .WithCronSchedule(cronExpression, builder =>
+                            builder.InTimeZone(TimeZoneInfo.Utc)));
+        }
+
+        private static void ConfigureRemoveExpiredConfirmEmailTokensBackgroundJob(
+            IServiceCollection services,
+            IServiceCollectionQuartzConfigurator configurator)
+        {
+            var settings = services.BuildServiceProvider().GetOptions<ExpiredConfirmEmailTokensRemovalSettings>();
+
+            var jobKey = new JobKey(nameof(RemoveExpiredConfirmEmailTokensBackgroundJob));
+
+            var cronExpression = $"0 {settings.Minutes} {settings.Hours} * * ?";
+
+            configurator
+                .AddJob<RemoveExpiredConfirmEmailTokensBackgroundJob>(jobKey)
                 .AddTrigger(
                     trigger => trigger.ForJob(jobKey)
                         .WithCronSchedule(cronExpression, builder =>

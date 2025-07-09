@@ -38,6 +38,8 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
                 EmailLinkGeneratorSettings.SectionName);
             services.ConfigureValidatableOptions<ExpiredRefreshTokensRemovalSettings, ExpiredRefreshTokensRemovalSettingsValidator>(
                 ExpiredRefreshTokensRemovalSettings.SectionName);
+            services.ConfigureValidatableOptions<ExpiredConfirmEmailTokensRemovalSettings, ExpiredConfirmEmailTokensRemovalSettingsValidator>(
+                ExpiredConfirmEmailTokensRemovalSettings.SectionName);
             services.ConfigureValidatableOptions<UsersUnconfirmedEmailRemovalSettings, UsersUnconfirmedEmailRemovalSettingsValidator>(
                 UsersUnconfirmedEmailRemovalSettings.SectionName);
 

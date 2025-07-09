@@ -19,5 +19,8 @@ namespace Bazario.Identity.Domain.ConfirmEmailTokens
         Task<int> CountActiveTokensAsync(
             UserId userId,
             CancellationToken cancellationToken);
+
+        Task<IEnumerable<ConfirmEmailToken>> GetExpiredConfirmEmailTokensAsync(
+            CancellationToken cancellationToken = default);
     }
 }

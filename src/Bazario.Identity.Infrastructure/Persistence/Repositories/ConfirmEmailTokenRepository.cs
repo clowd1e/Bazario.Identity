@@ -1,4 +1,5 @@
 ﻿using Bazario.AspNetCore.Shared.Domain.Common.Users;
+using Bazario.Identity.Domain.Common.Timestamps;
 using Bazario.Identity.Domain.ConfirmEmailTokens;
 using Bazario.Identity.Domain.ConfirmEmailTokens.ValueObjects;
 using Microsoft.EntityFrameworkCore;
@@ -48,6 +49,14 @@ namespace Bazario.Identity.Infrastructure.Persistence.Repositories
                 .FirstOrDefaultAsync(
                     token => token.Id == confirmEmailTokenId,
                     cancellationToken);
+        }
+
+        public async Task<IEnumerable<ConfirmEmailToken>> GetExpiredConfirmEmailTokensAsync(
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.ConfirmEmailTokens
+                .Where(token => token.ExpiresAt <= Timestamp.UtcNow())
+                .ToListAsync(cancellationToken);
         }
 
         public async Task InsertAsync(
