@@ -8,8 +8,14 @@ namespace Bazario.Identity.Domain.Users
             UserId userId,
             CancellationToken cancellationToken = default);
 
+        Task<User?> GetByIdWithConfirmEmailTokensAsync(
+            UserId userId,
+            CancellationToken cancellationToken = default);
+
         Task InsertAsync(
             User user,
             CancellationToken cancellationToken = default);
+
+        Task Delete(User user);
     }
 }

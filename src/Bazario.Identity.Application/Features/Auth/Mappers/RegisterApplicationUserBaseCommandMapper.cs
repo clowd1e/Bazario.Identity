@@ -21,7 +21,8 @@ namespace Bazario.Identity.Application.Features.Auth.Mappers
                 Email = source.Email,
                 NormalizedEmail = source.Email.ToUpperInvariant(),
                 NormalizedUserName = username.ToUpperInvariant(),
-                PhoneNumber = source.PhoneNumber
+                PhoneNumber = source.PhoneNumber,
+                RegisteredAt = DateTime.UtcNow,
             };
         }
     }

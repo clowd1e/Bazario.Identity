@@ -31,5 +31,7 @@ namespace Bazario.Identity.Application.Abstractions.Identity
         Task<Result> UpdateAsync(ApplicationUser user);
 
         Result BanUserAsync(ApplicationUser user);
+
+        Task<IEnumerable<ApplicationUser>> GetUsersWithUnconfirmedEmailsAsync();
     }
 }

@@ -138,6 +138,16 @@ namespace Bazario.Identity.Infrastructure.Services.Identity
             return role;
         }
 
+        public async Task<IEnumerable<ApplicationUser>> GetUsersWithUnconfirmedEmailsAsync()
+        {
+            var users = _userManager
+                .GetUsersInRoleAsync(Role.User.ToString()).Result
+                .Where(u => !u.EmailConfirmed)
+                .ToList();
+
+            return users;
+        }
+
         public async Task<bool> IsEmailConfirmed(ApplicationUser user)
         {
             ArgumentNullException.ThrowIfNull(user, nameof(user));

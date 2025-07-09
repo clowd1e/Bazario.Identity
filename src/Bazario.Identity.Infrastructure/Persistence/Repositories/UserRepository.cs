@@ -13,11 +13,29 @@ namespace Bazario.Identity.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
+        public Task Delete(User user)
+        {
+            _context.Users.Remove(user);
+
+            return Task.CompletedTask;
+        }
+
         public async Task<User?> GetByIdAsync(
             UserId userId,
             CancellationToken cancellationToken = default)
         {
             return await _context.Users
+                .FirstOrDefaultAsync(
+                    user => user.Id == userId,
+                    cancellationToken);
+        }
+
+        public async Task<User?> GetByIdWithConfirmEmailTokensAsync(
+            UserId userId,
+            CancellationToken cancellationToken = default)
+        {
+            return await _context.Users
+                .Include(user => user.ConfirmEmailTokens)
                 .FirstOrDefaultAsync(
                     user => user.Id == userId,
                     cancellationToken);

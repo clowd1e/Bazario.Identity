@@ -28,6 +28,7 @@ namespace Bazario.Identity.WebAPI.Extensions
             serviceProvider.ValidateOptionsOnStart<MessageBrokerSettings>();
             serviceProvider.ValidateOptionsOnStart<EmailLinkGeneratorSettings>();
             serviceProvider.ValidateOptionsOnStart<ExpiredRefreshTokensRemovalSettings>();
+            serviceProvider.ValidateOptionsOnStart<UsersUnconfirmedEmailRemovalSettings>();
 
             return serviceProvider;
         }
