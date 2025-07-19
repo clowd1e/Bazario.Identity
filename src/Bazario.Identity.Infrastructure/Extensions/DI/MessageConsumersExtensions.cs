@@ -9,11 +9,14 @@ namespace Bazario.Identity.Infrastructure.Extensions.DI
 {
     public static class MessageConsumersExtensions
     {
+        public const string ServiceIdentifier = "identity-service";
+
         public static IServiceCollection AddMessageConsumers(this IServiceCollection services)
         {
             services.AddMessageConsumer<UserUpdatedForIdentityServiceEvent, UserUpdatedForIdentityServiceEventConsumer>();
             services.AddMessageConsumer<UserBannedEvent, UserBannedEventConsumer>(
-                exchangeType: MessageBrokerExchangeType.Fanout);
+                exchangeType: MessageBrokerExchangeType.Fanout,
+                ServiceIdentifier);
 
             return services;
         }

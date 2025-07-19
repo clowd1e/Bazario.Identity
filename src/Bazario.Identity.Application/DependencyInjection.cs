@@ -1,4 +1,5 @@
-﻿using Bazario.AspNetCore.Shared.Application.Behaviors.Validation.DependencyInjection;
+﻿using Bazario.AspNetCore.Shared.Application.Behaviors.Logging.DependencyInjection;
+using Bazario.AspNetCore.Shared.Application.Behaviors.Validation.DependencyInjection;
 using Bazario.AspNetCore.Shared.Application.DomainEvents.DependencyInjection;
 using Bazario.AspNetCore.Shared.Application.Mappers.DependencyInjection;
 using Bazario.AspNetCore.Shared.Application.Messaging.DependencyInjection;
@@ -17,6 +18,8 @@ namespace Bazario.Identity.Application
             services.AddDomainEventHandlers(assembly);
 
             services.AddValidationPipelineBehavior();
+
+            services.AddRequestLoggingPipelineBehavior();
 
             services.AddValidators(assembly);
 
